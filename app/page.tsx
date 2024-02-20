@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <main className="flex w-screen h-screen bg-black justify-center items-center text-white">
@@ -7,9 +9,12 @@ export default function Home() {
           Unlimited bedtime stories at one click.
         </p>
         <div>
-          <button className="bg-purple-600 px-4 py-2 rounded-lg text-xl">
+          <Link
+            href="/get-started"
+            className="bg-purple-600 px-4 py-2 rounded-lg text-xl"
+          >
             Get started
-          </button>
+          </Link>
         </div>
       </div>
     </main>
