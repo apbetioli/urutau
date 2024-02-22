@@ -1,7 +1,12 @@
+import { Document } from 'langchain/document'
+import { Entry } from '@prisma/client'
+import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { OpenAI } from 'langchain/llms/openai'
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { PromptTemplate } from 'langchain/prompts'
 import { StructuredOutputParser } from 'langchain/output_parsers'
-import z from 'zod'
+import { loadQARefineChain } from 'langchain/chains'
+import { z } from 'zod'
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -48,4 +53,25 @@ export const analyze = async (content: string) => {
   } catch (e) {
     console.error('Failed to parse the result from the AI.', e)
   }
+}
+
+export const qa = async (question: string, entries: Partial<Entry>[]) => {
+  const docs = entries.map(
+    (entry) =>
+      new Document({
+        pageContent: entry.content!,
+        metadata: { source: entry.id, date: entry.createdAt },
+      })
+  )
+  const model = new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
+  const chain = loadQARefineChain(model)
+  const embeddings = new OpenAIEmbeddings()
+  const store = await MemoryVectorStore.fromDocuments(docs, embeddings)
+  const relevantDocs = await store.similaritySearch(question)
+  const res = await chain.invoke({
+    input_documents: relevantDocs,
+    question,
+  })
+
+  return res.output_text
 }

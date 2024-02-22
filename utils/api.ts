@@ -25,3 +25,17 @@ export const updateEntry = async (id: string, content: string) => {
     return json
   }
 }
+
+export const askQuestion = async (question: string) => {
+  const res = await fetch('/api/question', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ question }),
+  })
+  if (res.ok) {
+    const json = await res.json()
+    return json
+  }
+}
