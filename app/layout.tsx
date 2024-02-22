@@ -23,6 +23,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const links = [
+    { href: '/', label: 'Home' },
+    { href: '/dashboard', label: 'Dashboard' },
+  ]
+
   return (
     <html lang="en">
       <ClerkProvider
@@ -46,10 +51,19 @@ export default function RootLayout({
           className={`${inter.className} h-screen flex flex-col bg-black text-white`}
         >
           <SignedIn>
-            <header className="flex w-full items-center h-20 gap-4 px-4 border-b border-white/20 border-solid sm:px-8 border-opacity-20">
+            <header className="flex w-full items-center h-20 gap-6 px-4 border-b border-white/20 border-solid sm:px-8 border-opacity-20">
               <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
                 <h1 className="text-3xl font-bold">Urutau</h1>
               </Link>
+
+              {links.map((link) => {
+                return (
+                  <Link key={link.label} href={link.href}>
+                    {link.label}
+                  </Link>
+                )
+              })}
+
               <div className="grow" />
               <div className="hidden sm:block">
                 <OrganizationSwitcher afterCreateOrganizationUrl="/dashboard" />
