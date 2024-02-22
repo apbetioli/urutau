@@ -12,6 +12,17 @@ export const POST = async () => {
     },
   })
 
+  await prisma.analysis.create({
+    data: {
+      entryId: entry.id,
+      mood: 'neutral',
+      color: 'gray',
+      summary: 'No summary available',
+      negative: false,
+      subject: 'No subject available',
+    },
+  })
+
   revalidatePath('/dashboard')
 
   return NextResponse.json({ data: entry })

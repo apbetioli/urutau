@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -28,20 +29,25 @@ model Entry {
   updatedAt DateTime  @updatedAt
   userId    String
   content   String    @db.Text
-  author    User      @relation(fields: [userId], references: [id])
+  author    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   analysis  Analysis?
 
   @@unique([id, userId])
+  @@index([userId])
 }
 
 model Analysis {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  entryId   String   @unique
-  entry     Entry    @relation(fields: [entryId], references: [id])
-  mood      String
-  summary   String   @db.Text
-  color     String
-  negative  Boolean
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  entryId        String   @unique
+  entry          Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  mood           String   @db.Text
+  summary        String   @db.Text
+  negative       Boolean
+  subject        String   @db.Text
+  color          String   @db.Text
+  sentimentScore Float?
+
+  @@index([entryId])
 }

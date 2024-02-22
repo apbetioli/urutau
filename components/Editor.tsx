@@ -13,11 +13,12 @@ type Props = {
 export default function Editor({ entry }: Props) {
   const [content, setContent] = useState(entry.content)
   const [isSaving, setIsSaving] = useState(false)
-  const analysis = [
-    { name: 'Summary', value: '' },
-    { name: 'Subject', value: '' },
-    { name: 'Mood', value: '' },
-    { name: 'Negative', value: false },
+  const [analysis, setAnalysis] = useState(entry.analysis)
+  const analysisData = [
+    { name: 'Summary', value: analysis?.summary },
+    { name: 'Subject', value: analysis?.subject },
+    { name: 'Mood', value: analysis?.mood },
+    { name: 'Negative', value: analysis?.negative ? 'Yes' : 'No' },
   ]
 
   useAutosave({
@@ -25,7 +26,8 @@ export default function Editor({ entry }: Props) {
     onSave: async (newContent) => {
       setIsSaving(true)
       try {
-        await updateEntry(entry.id, newContent)
+        const updated = await updateEntry(entry.id, newContent)
+        setAnalysis(updated.data.analysis)
       } finally {
         setIsSaving(false)
       }
@@ -51,16 +53,21 @@ export default function Editor({ entry }: Props) {
       </div>
       <aside className="flex flex-col gap-4 border-l border-white/20">
         <div>
-          <h2 className="text-2xl">Analysis</h2>
+          <h2
+            className="text-2xl p-4"
+            style={{ backgroundColor: analysis?.color || 'inherit' }}
+          >
+            Analysis
+          </h2>
         </div>
         <div>
           <ul>
-            {analysis.map((item) => (
+            {analysisData.map((item) => (
               <li
                 key={item.name}
-                className="flex items-center justify-between border-b border-t"
+                className="flex items-center justify-between border-b border-white/50 p-4"
               >
-                <span className="text-lg font-semibold p-4">{item.name}</span>
+                <span className="text-lg font-semibold">{item.name}</span>
                 <span>{item.value}</span>
               </li>
             ))}
