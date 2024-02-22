@@ -3,28 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3002",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.7",
-    "@prisma/client": "^5.10.1",
+    "@clerk/nextjs": "4.29.7",
+    "@prisma/client": "5.10.1",
+    "classnames": "^2.5.1",
     "next": "14.1.0",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
+    "@types/node": "20.1.4",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
-    "postcss": "^8",
-    "prisma": "^5.10.1",
-    "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "postcss": "8.4.23",
+    "prisma": "5.10.1",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
   }
 }
