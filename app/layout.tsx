@@ -48,7 +48,7 @@ export default function RootLayout({
           <SignedIn>
             <header className="flex w-full items-center h-20 gap-4 px-4 border-b border-white/20 border-solid sm:px-8 border-opacity-20">
               <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
-                <h1 className="text-2xl">Urutau</h1>
+                <h1 className="text-3xl font-bold">Urutau</h1>
               </Link>
               <div className="grow" />
               <div className="hidden sm:block">

@@ -30,6 +30,8 @@ model Entry {
   content   String    @db.Text
   author    User      @relation(fields: [userId], references: [id])
   analysis  Analysis?
+
+  @@unique([id, userId])
 }
 
 model Analysis {

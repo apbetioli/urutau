@@ -1,3 +1,6 @@
+import EntryCard from '@/components/EntryCard'
+import Link from 'next/link'
+import NewEntryCard from '@/components/NewEntryCard'
 import { auth } from '@clerk/nextjs'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
@@ -8,7 +11,7 @@ const getEntries = async () => {
 
   return await prisma.entry.findMany({
     where: {
-      userId: user!.id,
+      userId: user.id,
     },
     orderBy: {
       createdAt: 'desc',
@@ -24,7 +27,18 @@ export default async function DashboardPage() {
   }
 
   const entries = await getEntries()
-  console.log(entries)
 
-  return <div className="p-8">👋 Hi</div>
+  return (
+    <div className="p-8">
+      <h2 className="text-2xl mb-5">Entries</h2>
+      <div className="grid grid-cols-3 gap-4">
+        <NewEntryCard />
+        {entries.map((entry) => (
+          <Link key={entry.id} href={`/dashboard/${entry.id}`}>
+            <EntryCard entry={entry} />
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
 }

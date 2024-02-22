@@ -11,7 +11,7 @@ export default function Home() {
         <div>
           <Link
             href="/dashboard"
-            className="bg-purple-600 px-4 py-2 rounded-lg text-xl text-white"
+            className="bg-primary-600 px-4 py-2 rounded-lg text-xl text-white"
           >
             Get started
           </Link>
