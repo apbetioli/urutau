@@ -1,6 +1,7 @@
 import EntryCard from '@/components/EntryCard'
 import Link from 'next/link'
 import NewEntryCard from '@/components/NewEntryCard'
+import Question from '@/components/Question'
 import { auth } from '@clerk/nextjs'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
@@ -34,7 +35,8 @@ export default async function DashboardPage() {
   return (
     <div className="p-8">
       <h2 className="text-2xl mb-5">Entries</h2>
-      <div className="grid grid-cols-3 gap-4">
+      <Question />
+      <div className="grid grid-cols-3 gap-4 mt-5">
         <NewEntryCard />
         {entries.map((entry) => (
           <Link key={entry.id} href={`/dashboard/${entry.id}`}>
