@@ -19,6 +19,7 @@ export default function Editor({ entry }: Props) {
     { name: 'Subject', value: analysis?.subject },
     { name: 'Mood', value: analysis?.mood },
     { name: 'Negative', value: analysis?.negative ? 'Yes' : 'No' },
+    { name: 'Sentiment Score', value: analysis?.sentimentScore },
   ]
 
   useAutosave({

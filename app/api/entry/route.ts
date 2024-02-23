@@ -20,6 +20,7 @@ export const POST = async () => {
       summary: 'No summary available',
       negative: false,
       subject: 'No subject available',
+      sentimentScore: 0
     },
   })
 

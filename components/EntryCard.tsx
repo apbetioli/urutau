@@ -9,7 +9,7 @@ export default function EntryCard({ entry }: Props) {
   return (
     <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-gray-800 shadow">
       <div className="p-4">{date}</div>
-      <div className="p-4">{entry.content}</div>
+      <div className="p-4">{entry.analysis?.subject}</div>
       <div className="p-4">{entry.analysis?.summary}</div>
       <div className="p-4">{entry.analysis?.mood}</div>
     </div>
