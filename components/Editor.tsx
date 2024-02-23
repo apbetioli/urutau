@@ -1,11 +1,11 @@
 'use client'
 
+import { generateSpeech, updateStory } from '@/utils/api'
 import { useAutosave, useDebounce } from 'react-autosave'
 import { useEffect, useState } from 'react'
 
 import Loading from '@/app/loading'
 import { Story } from '@prisma/client'
-import { updateStory } from '@/utils/api'
 
 type Props = {
   story: Story
@@ -14,8 +14,10 @@ type Props = {
 export default function Editor({ story }: Props) {
   const [content, setContent] = useState(story.content)
   const [subject, setSubject] = useState(story.subject)
+  const [hasSpeech, setHasSpeech] = useState(!!story.speech)
   const [isSaving, setIsSaving] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [isSpeechGenerating, setIsSpeechGenerating] = useState(false)
 
   useAutosave({
     data: content,
@@ -44,6 +46,15 @@ export default function Editor({ story }: Props) {
 
   const handleDelete = async () => {
     console.log('TODO delete')
+  }
+
+  const handleGenerateSpeech = async () => {
+    setIsSpeechGenerating(true)
+    const { data } = await generateSpeech(story.id)
+    if (data.id) {
+      setHasSpeech(true)
+    }
+    setIsSpeechGenerating(false)
   }
 
   return (
@@ -90,7 +101,7 @@ export default function Editor({ story }: Props) {
           onChange={(e) => setContent(e.target.value)}
         />
       </main>
-      <aside className="hidden lg:flex flex-col gap-4 border-l border-white/20 p-8">
+      <aside className="col-span-3 lg:col-span-1 flex flex-col gap-4 border-l border-white/20 p-8">
         <h3>Details</h3>
         <div className="flex flex-col gap-2">
           <span className="font-semibold">Prompt</span>
@@ -101,6 +112,18 @@ export default function Editor({ story }: Props) {
           onClick={() => handleDelete()}
         >
           Delete story
+        </button>
+        {hasSpeech && !isSpeechGenerating && (
+          <audio controls src={`/api/story/${story.id}/speech`} />
+        )}
+        <button
+          className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
+          disabled={isSpeechGenerating}
+          onClick={() => handleGenerateSpeech()}
+        >
+          {isSpeechGenerating
+            ? 'Generating audio... Please wait'
+            : 'Generate audio'}
         </button>
       </aside>
     </div>

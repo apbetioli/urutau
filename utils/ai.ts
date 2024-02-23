@@ -1,10 +1,14 @@
+import { OpenAI as LangChainOpenAI, OpenAIEmbeddings } from '@langchain/openai'
+
 import { Document } from 'langchain/document'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
-import { OpenAI } from 'langchain/llms/openai'
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
-import { PromptTemplate } from 'langchain/prompts'
+import OpenAI from 'openai'
+import { PromptTemplate } from '@langchain/core/prompts'
+import { Story } from '@prisma/client'
 import { StructuredOutputParser } from 'langchain/output_parsers'
+import fs from 'fs'
 import { loadQARefineChain } from 'langchain/chains'
+import path from 'path'
 import { z } from 'zod'
 
 const parser = StructuredOutputParser.fromZodSchema(
@@ -44,14 +48,12 @@ const createStructuredPrompt = async (content: string) => {
 }
 
 export const createStory = async (userPrompt: string) => {
-  const model = new OpenAI({
+  const model = new LangChainOpenAI({
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
   })
   const prompt = `Create a new story about ${userPrompt}, and define the title as the first line`
   const content = await model.invoke(prompt)
-  console.log(content)
-
   return {
     content,
     subject: content.split('\n')[0],
@@ -59,8 +61,21 @@ export const createStory = async (userPrompt: string) => {
   }
 }
 
+export const tts = async (content: string) => {
+  const openai = new OpenAI()
+  console.log('Generating speech')
+  const mp3 = await openai.audio.speech.create({
+    model: 'tts-1',
+    voice: 'alloy',
+    input: content,
+  })
+  console.log('Generated speech')
+  const bytes = await mp3.arrayBuffer()
+  return Buffer.from(bytes)
+}
+
 export const analyze = async (content: string) => {
-  const model = new OpenAI({
+  const model = new LangChainOpenAI({
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
   })
@@ -75,7 +90,7 @@ export const analyze = async (content: string) => {
   }
 }
 
-export const qa = async (question: string, stories: Partial<Entry>[]) => {
+export const qa = async (question: string, stories: Partial<Story>[]) => {
   const docs = stories.map(
     (entry) =>
       new Document({
@@ -83,7 +98,10 @@ export const qa = async (question: string, stories: Partial<Entry>[]) => {
         metadata: { source: entry.id, date: entry.createdAt },
       })
   )
-  const model = new OpenAI({ temperature: 0, modelName: 'gpt-3.5-turbo' })
+  const model = new LangChainOpenAI({
+    temperature: 0,
+    modelName: 'gpt-3.5-turbo',
+  })
   const chain = loadQARefineChain(model)
   const embeddings = new OpenAIEmbeddings()
   const store = await MemoryVectorStore.fromDocuments(docs, embeddings)

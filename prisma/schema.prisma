@@ -32,7 +32,19 @@ model Story {
   content   String   @db.Text
   prompt    String   @db.Text
   subject   String   @db.Text
+  speech    Speech?
 
   @@unique([id, userId])
   @@index([userId])
+}
+
+model Speech {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  storyId   String   @unique
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  buffer    Bytes
+
+  @@index([storyId])
 }

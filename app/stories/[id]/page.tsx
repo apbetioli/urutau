@@ -13,6 +13,13 @@ const getStory = async (id: string) => {
         userId: user.id,
       },
     },
+    include: {
+      speech: {
+        select: {
+          id: true,
+        },
+      },
+    },
   })
 }
 
