@@ -20,34 +20,19 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   clerkId   String   @unique
-  entries   Entry[]
+  stories   Story[]
 }
 
-model Entry {
-  id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+model Story {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content   String    @db.Text
-  analysis  Analysis?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  prompt    String   @db.Text
+  subject   String   @db.Text
 
   @@unique([id, userId])
   @@index([userId])
-}
-
-model Analysis {
-  id             String   @id @default(uuid())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  entryId        String   @unique
-  entry          Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
-  mood           String   @db.Text
-  summary        String   @db.Text
-  negative       Boolean  @default(false)
-  subject        String   @db.Text
-  color          String   @db.Text
-  sentimentScore Float?   @default(0)
-
-  @@index([entryId])
 }

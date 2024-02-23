@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-700 dark:bg-gray-950 dark:text-gray-300;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-bold;
+  }
+
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-3xl;
+  }
+
+  h3 {
+    @apply text-2xl;
+  }
+}
+
+@layer components {
+  label {
+    @apply text-gray-700 dark:text-gray-300 font-semibold;
+  }
+
+  button {
+    @apply disabled:opacity-70;
+  }
+
+  input[type='text'],
+  input[type='number'],
+  select {
+    @apply rounded-lg border border-gray-200 bg-white p-2 text-gray-700 placeholder-gray-400/70 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:placeholder-gray-500 dark:focus:border-blue-300 disabled:opacity-70 text-lg;
+  }
+}

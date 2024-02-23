@@ -1,84 +1,106 @@
 'use client'
 
-import { Entry } from '@prisma/client'
+import { useAutosave, useDebounce } from 'react-autosave'
+import { useEffect, useState } from 'react'
+
 import Loading from '@/app/loading'
-import { updateEntry } from '@/utils/api'
-import { useAutosave } from 'react-autosave'
-import { useState } from 'react'
+import { Story } from '@prisma/client'
+import { updateStory } from '@/utils/api'
 
 type Props = {
-  entry: Entry
+  story: Story
 }
 
-export default function Editor({ entry }: Props) {
-  const [content, setContent] = useState(entry.content)
+export default function Editor({ story }: Props) {
+  const [content, setContent] = useState(story.content)
+  const [subject, setSubject] = useState(story.subject)
   const [isSaving, setIsSaving] = useState(false)
-  const [analysis, setAnalysis] = useState(entry.analysis)
-  const analysisData = [
-    { name: 'Summary', value: analysis?.summary },
-    { name: 'Subject', value: analysis?.subject },
-    { name: 'Mood', value: analysis?.mood },
-    { name: 'Negative', value: analysis?.negative ? 'Yes' : 'No' },
-    { name: 'Sentiment Score', value: analysis?.sentimentScore },
-  ]
+  const [isEditing, setIsEditing] = useState(false)
 
   useAutosave({
     data: content,
     onSave: async (newContent) => {
       setIsSaving(true)
       try {
-        const updated = await updateEntry(entry.id, newContent)
-        setAnalysis(updated.data.analysis)
+        await updateStory(story.id, {
+          content: newContent,
+        })
       } finally {
         setIsSaving(false)
       }
     },
-    interval: 5000,
+    interval: 2000,
   })
 
-  const handleDelete = async () => {}
+  const updateSubject = async (newSubject: string) => {
+    setIsSaving(true)
+    const updated = await updateStory(story.id, {
+      subject: newSubject,
+    })
+    setSubject(updated.data.subject)
+    setIsEditing(false)
+    setIsSaving(false)
+  }
+
+  const handleDelete = async () => {
+    console.log('TODO delete')
+  }
 
   return (
     <div className="h-full w-full grid grid-cols-3">
-      <div className="relative col-span-2">
+      <main className="col-span-3 lg:col-span-2 p-8">
+        <div className="flex items-center mb-8 gap-2">
+          {isEditing ? (
+            <>
+              <input
+                className="w-1/2"
+                type="text"
+                value={subject}
+                disabled={isSaving}
+                onChange={(e) => setSubject(e.target.value)}
+              />
+              <button
+                className="bg-primary-600 hover:bg-primary-700 p-2 rounded-lg"
+                disabled={isSaving}
+                onClick={() => updateSubject(subject)}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-600 hover:bg-gray-700 p-2 rounded-lg"
+                disabled={isSaving}
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <h2 onClick={() => setIsEditing((e) => !e)}>{subject}</h2>
+          )}
+          <div className="grow" />
+          {isSaving && (
+            <div className="flex items-center gap-2">
+              <Loading /> Saving...
+            </div>
+          )}
+        </div>
         <textarea
-          className="bg-slate-800 p-10 text-2xl outline-none w-full h-full"
+          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%]"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        {isSaving && (
-          <div className="absolute top-0 right-0 flex items-center gap-2">
-            <Loading /> Saving...
-          </div>
-        )}
-      </div>
-      <aside className="flex flex-col gap-4 border-l border-white/20">
-        <div>
-          <h2
-            className="text-2xl p-4"
-            style={{ backgroundColor: analysis?.color || 'inherit' }}
-          >
-            Analysis
-          </h2>
-        </div>
-        <div>
-          <ul>
-            {analysisData.map((item) => (
-              <li
-                key={item.name}
-                className="flex items-center justify-between border-b border-white/50 p-4"
-              >
-                <span className="text-lg font-semibold">{item.name}</span>
-                <span>{item.value}</span>
-              </li>
-            ))}
-          </ul>
+      </main>
+      <aside className="hidden lg:flex flex-col gap-4 border-l border-white/20 p-8">
+        <h3>Details</h3>
+        <div className="flex flex-col gap-2">
+          <span className="font-semibold">Prompt</span>
+          <span>{story.prompt}</span>
         </div>
         <button
-          className="bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
+          className="hidden bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
           onClick={() => handleDelete()}
         >
-          Delete entry
+          Delete story
         </button>
       </aside>
     </div>

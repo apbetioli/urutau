@@ -36,7 +36,7 @@ export default function Question() {
         <button
           disabled={loading}
           type="submit"
-          className="bg-primary-600 px-4 py-2 rounded-lg text-xl text-white"
+          className="bg-primary-600 hover:bg-primary-700 px-4 py-2 rounded-lg text-xl text-white"
         >
           Ask
         </button>

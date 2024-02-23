@@ -1,28 +1,28 @@
-export const newEntry = async () => {
-  const res = await fetch('/api/entry', {
+import { Story } from "@prisma/client"
+
+export const newStory = async (prompt: string) => {
+  const res = await fetch('/api/story', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ prompt }),
   })
   if (res.ok) {
-    const json = await res.json()
-    return json
+    return await res.json()
   }
 }
 
-export const updateEntry = async (id: string, content: string) => {
-  const res = await fetch(`/api/entry/${id}`, {
+export const updateStory = async (id: string, story: Partial<Story>) => {
+  const res = await fetch(`/api/story/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ content }),
+    body: JSON.stringify(story),
   })
   if (res.ok) {
-    const json = await res.json()
-    return json
+    return await res.json()
   }
 }
 
@@ -35,7 +35,6 @@ export const askQuestion = async (question: string) => {
     body: JSON.stringify({ question }),
   })
   if (res.ok) {
-    const json = await res.json()
-    return json
+    return await res.json()
   }
 }

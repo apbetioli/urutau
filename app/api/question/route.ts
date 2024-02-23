@@ -7,7 +7,7 @@ export const POST = async (request: Request) => {
   const { question } = await request.json()
   const user = await getUserByClerkId()
 
-  const entries = await prisma.entry.findMany({
+  const stories = await prisma.story.findMany({
     where: {
       userId: user.id,
     },
@@ -18,7 +18,7 @@ export const POST = async (request: Request) => {
     },
   })
 
-  const answer = await qa(question, entries)
+  const answer = await qa(question, stories)
 
   return NextResponse.json({ data: answer })
 }

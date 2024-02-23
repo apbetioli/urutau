@@ -1,5 +1,4 @@
 import { Document } from 'langchain/document'
-import { Entry } from '@prisma/client'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { OpenAI } from 'langchain/llms/openai'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
@@ -33,7 +32,7 @@ const parser = StructuredOutputParser.fromZodSchema(
   })
 )
 
-const getPrompt = async (content: string) => {
+const createStructuredPrompt = async (content: string) => {
   const format_instructions = parser.getFormatInstructions()
   const prompt = new PromptTemplate({
     template:
@@ -44,13 +43,29 @@ const getPrompt = async (content: string) => {
   return await prompt.format({ entry: content })
 }
 
+export const createStory = async (userPrompt: string) => {
+  const model = new OpenAI({
+    temperature: 0,
+    modelName: 'gpt-3.5-turbo',
+  })
+  const prompt = `Create a new story about ${userPrompt}, and define the title as the first line`
+  const content = await model.invoke(prompt)
+  console.log(content)
+
+  return {
+    content,
+    subject: content.split('\n')[0],
+    prompt: userPrompt,
+  }
+}
+
 export const analyze = async (content: string) => {
   const model = new OpenAI({
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
   })
 
-  const prompt = await getPrompt(content)
+  const prompt = await createStructuredPrompt(content)
   const result = await model.invoke(prompt)
   console.log(result)
   try {
@@ -60,8 +75,8 @@ export const analyze = async (content: string) => {
   }
 }
 
-export const qa = async (question: string, entries: Partial<Entry>[]) => {
-  const docs = entries.map(
+export const qa = async (question: string, stories: Partial<Entry>[]) => {
+  const docs = stories.map(
     (entry) =>
       new Document({
         pageContent: entry.content!,
