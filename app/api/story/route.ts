@@ -7,9 +7,9 @@ import { revalidatePath } from 'next/cache'
 export const POST = async (request: Request) => {
   const user = await getUserByClerkId()
 
-  const { prompt } = await request.json()
+  const { prompt, language } = await request.json()
 
-  const aiStory = await createStory(prompt)
+  const aiStory = await createStory(prompt, language)
 
   const story = await prisma.story.create({
     data: {
