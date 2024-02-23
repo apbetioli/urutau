@@ -60,37 +60,9 @@ export default function StoryEditor({ story }: Props) {
   return (
     <div className="h-full w-full grid grid-cols-3">
       <main className="col-span-3 lg:col-span-2 p-8">
-        <div className="flex items-center mb-8 gap-2">
-          {isEditing ? (
-            <>
-              <input
-                className="w-1/2"
-                type="text"
-                value={subject}
-                disabled={isSaving}
-                onChange={(e) => setSubject(e.target.value)}
-              />
-              <button
-                className="bg-primary-600 hover:bg-primary-700 p-2 rounded-lg"
-                disabled={isSaving}
-                onClick={() => updateSubject(subject)}
-              >
-                Save
-              </button>
-              <button
-                className="bg-gray-600 hover:bg-gray-700 p-2 rounded-lg"
-                disabled={isSaving}
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <h2 onClick={() => setIsEditing((e) => !e)}>{subject}</h2>
-          )}
-          <div className="grow" />
+        <div className="relative flex items-center gap-2">
           {isSaving && (
-            <div className="flex items-center gap-2">
+            <div className="absolute top-3 right-1 flex items-center gap-2">
               <Loading /> Saving...
             </div>
           )}
@@ -102,11 +74,39 @@ export default function StoryEditor({ story }: Props) {
         />
       </main>
       <aside className="col-span-3 lg:col-span-1 flex flex-col gap-4 border-l border-white/20 p-8">
-        <h3>Details</h3>
-        <div className="flex flex-col gap-2">
-          <span className="font-semibold">Prompt</span>
-          <span>{story.prompt}</span>
+        {isEditing ? (
+          <div className="flex gap-1">
+            <input
+              className="grow"
+              type="text"
+              value={subject}
+              disabled={isSaving}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <button
+              className="bg-primary-600 hover:bg-primary-700 p-2 rounded-lg"
+              disabled={isSaving}
+              onClick={() => updateSubject(subject)}
+            >
+              Save
+            </button>
+            <button
+              className="bg-gray-600 hover:bg-gray-700 p-2 rounded-lg"
+              disabled={isSaving}
+              onClick={() => setIsEditing(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <h3 onClick={() => setIsEditing((e) => !e)}>{subject}</h3>
+        )}
+        <div className="relative">
+          {story.image && (
+            <img src={story.image} alt={story.subject} className="w-full" />
+          )}
         </div>
+
         <button
           className="hidden bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
           onClick={() => handleDelete()}
@@ -123,9 +123,11 @@ export default function StoryEditor({ story }: Props) {
         >
           {isSpeechGenerating
             ? 'Generating audio... Please wait'
-            : 'Generate audio'}
+            : hasSpeech
+              ? 'Regenerate audio'
+              : 'Generate audio'}
         </button>
-        <div className="p-8">{isSpeechGenerating && <Loading />}</div>
+        <div>{isSpeechGenerating && <Loading />}</div>
       </aside>
     </div>
   )

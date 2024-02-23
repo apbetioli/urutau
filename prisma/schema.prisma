@@ -33,6 +33,7 @@ model Story {
   prompt    String   @db.Text
   subject   String   @db.Text
   speech    Speech?
+  image     String?
 
   @@unique([id, userId])
   @@index([userId])

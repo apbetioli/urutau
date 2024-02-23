@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
+import { generateTTS } from '@/utils/ai'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 import { revalidatePath } from 'next/cache'
-import { tts } from '@/utils/ai'
 
 export const POST = async (
   request: Request,
@@ -24,7 +24,7 @@ export const POST = async (
     },
   })
 
-  const buffer = await tts(story.content)
+  const buffer = await generateTTS(story.content)
 
   const speech = await prisma.speech.upsert({
     create: {

@@ -1,25 +1,7 @@
 import { OpenAI as LangChainOpenAI } from '@langchain/openai'
 import OpenAI from 'openai'
 
-export const createStory = async (
-  userPrompt: string,
-  language: string = 'English',
-) => {
-  const model = new LangChainOpenAI({
-    temperature: 0,
-    modelName: 'gpt-3.5-turbo',
-  })
-  const prompt = `Create a new bedtime story in ${language} about ${userPrompt}, and define the title as the first line`
-
-  const content = await model.invoke(prompt)
-  return {
-    content,
-    subject: content.split('\n')[0],
-    prompt: userPrompt,
-  }
-}
-
-export const tts = async (content: string) => {
+export const generateTTS = async (content: string) => {
   const openai = new OpenAI()
   const mp3 = await openai.audio.speech.create({
     model: 'tts-1',
@@ -28,4 +10,38 @@ export const tts = async (content: string) => {
   })
   const bytes = await mp3.arrayBuffer()
   return Buffer.from(bytes)
+}
+
+export const generateImage = async (prompt: string) => {
+  const openai = new OpenAI()
+  const response = await openai.images.generate({
+    model: 'dall-e-2',
+    prompt,
+    size: '256x256',
+    quality: 'standard',
+    n: 1,
+  })
+
+  return response.data[0].url
+}
+
+export const generateStory = async (
+  prompt: string,
+  language: string = 'English',
+) => {
+  const model = new LangChainOpenAI({
+    temperature: 0,
+    modelName: 'gpt-3.5-turbo',
+  })
+  const refinedPrompt = `Create a new bedtime story in ${language} about ${prompt}, and define the title as the first line`
+  const content = await model.invoke(refinedPrompt)
+  const subject = content.split('\n')[0]
+  const image = await generateImage(subject)
+
+  return {
+    content,
+    subject,
+    prompt,
+    image,
+  }
 }
