@@ -29,7 +29,7 @@ export default function NewStoryPage() {
         onSubmit={generate}
       >
         <label htmlFor="context" className="mb-2">
-          What`s your story about? (optional)
+          What`s your story about?
         </label>
         <input
           id="context"
@@ -38,13 +38,14 @@ export default function NewStoryPage() {
           value={prompt}
           placeholder="two little hamsters on vacation"
           onChange={(e) => setPrompt(e.target.value)}
+          required
         />
         <button
           disabled={isLoading}
           className="bg-primary-600 rounded-sm mt-5 py-2"
           type="submit"
         >
-          Generate
+          Generate story
         </button>
         <div className="p-8">{isLoading && <Loading />}</div>
       </form>

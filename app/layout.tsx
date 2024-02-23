@@ -18,7 +18,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const links = [
+  const signedOutLinks = [
     { href: '/', label: 'Stories' },
     { href: '/', label: 'Pricing' },
     { href: '/', label: 'FAQs' },
@@ -26,7 +26,7 @@ export default function RootLayout({
     {
       href: '/sign-up',
       label: 'Sign up',
-      className: 'bg-success-700 py-1.5 px-2 rounded-lg',
+      className: 'bg-success-600 hover:bg-success-700 py-1.5 px-2 rounded-lg',
     },
   ]
 
@@ -65,7 +65,7 @@ export default function RootLayout({
 
             <div className="grow" />
             <SignedOut>
-              {links.map((link) => {
+              {signedOutLinks.map((link) => {
                 return (
                   <Link
                     key={link.label}

@@ -1,5 +1,5 @@
-import GradientBackground from "@/components/GradientBackground";
-import { SignUp } from "@clerk/nextjs";
+import GradientBackground from '@/components/GradientBackground'
+import { SignUp } from '@clerk/nextjs'
 
 export default function Page() {
   return (
@@ -7,5 +7,5 @@ export default function Page() {
       <SignUp />
       <GradientBackground />
     </div>
-  );
+  )
 }

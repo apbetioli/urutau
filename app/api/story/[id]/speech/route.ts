@@ -4,7 +4,10 @@ import { prisma } from '@/utils/db'
 import { revalidatePath } from 'next/cache'
 import { tts } from '@/utils/ai'
 
-export const POST = async (request: Request, { params }) => {
+export const POST = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
   const user = await getUserByClerkId()
 
   const { id } = params
@@ -44,7 +47,10 @@ export const POST = async (request: Request, { params }) => {
   return NextResponse.json({ data: speech })
 }
 
-export const GET = async (request: Request, { params }) => {
+export const GET = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
   const user = await getUserByClerkId()
 
   const { id } = params

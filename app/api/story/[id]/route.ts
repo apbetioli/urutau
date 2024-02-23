@@ -3,7 +3,10 @@ import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 import { revalidatePath } from 'next/cache'
 
-export const PATCH = async (request: Request, { params }) => {
+export const PATCH = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
   const user = await getUserByClerkId()
 
   const { content, subject } = await request.json()

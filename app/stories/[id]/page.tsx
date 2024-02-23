@@ -1,8 +1,12 @@
-import Editor from '@/components/Editor'
-import EmptyResult from '@/components/EmptyResult'
+import { Speech, Story } from '@prisma/client'
+
+import Empty from '@/components/Empty'
 import Link from 'next/link'
+import StoryEditor from '@/components/StoryEditor'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
+
+type StoryWithSpeech = Story & { speech?: Pick<Speech, 'id'> }
 
 const getStory = async (id: string) => {
   const user = await getUserByClerkId()
@@ -23,14 +27,18 @@ const getStory = async (id: string) => {
   })
 }
 
-export default async function StoryPage({ params }) {
-  const story = await getStory(params.id)
+export default async function StoryPage({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const story = (await getStory(params.id)) as StoryWithSpeech
   return (
     <div className="flex flex-col w-full h-full">
       {story ? (
-        <Editor story={story} />
+        <StoryEditor story={story} />
       ) : (
-        <EmptyResult
+        <Empty
           title="Story not found"
           text="Click on the button below to check for available stories."
         >
@@ -40,7 +48,7 @@ export default async function StoryPage({ params }) {
           >
             Check avaliable stories
           </Link>
-        </EmptyResult>
+        </Empty>
       )}
     </div>
   )

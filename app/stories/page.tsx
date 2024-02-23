@@ -1,4 +1,4 @@
-import EmptyResult from '@/components/EmptyResult'
+import Empty from '@/components/Empty'
 import Link from 'next/link'
 import StoryCard from '@/components/StoryCard'
 import { getUserByClerkId } from '@/utils/auth'
@@ -23,7 +23,7 @@ export default async function StoriesPage() {
     <div className="p-8">
       <h2 className="mb-5">Stories</h2>
       {stories.length === 0 ? (
-        <EmptyResult
+        <Empty
           title="No stories yet"
           text="Get started by clicking on the button below"
         >
@@ -33,7 +33,7 @@ export default async function StoriesPage() {
           >
             New story
           </Link>
-        </EmptyResult>
+        </Empty>
       ) : (
         <div className="grid grid-cols-3 gap-4 mt-5">
           {stories.map((story) => (

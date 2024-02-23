@@ -11,13 +11,12 @@ const config: Config = {
       colors: {
         'primary-600': '#6C47FF',
         'primary-700': '#5639CC',
-        'primary-50': '#F4F2FF',
+        'success-600': '#0D8050',
         'success-700': '#027A48',
-        'success-50': '#ECFDF3',
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [require('@tailwindcss/forms')],
   darkMode: 'class',
 }
 export default config

@@ -26,19 +26,6 @@ export const updateStory = async (id: string, story: Partial<Story>) => {
   }
 }
 
-export const askQuestion = async (question: string) => {
-  const res = await fetch('/api/question', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ question }),
-  })
-  if (res.ok) {
-    return await res.json()
-  }
-}
-
 export const generateSpeech = async (id: string) => {
   const res = await fetch(`/api/story/${id}/speech`, {
     method: 'POST',

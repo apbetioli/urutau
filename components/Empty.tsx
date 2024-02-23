@@ -1,15 +1,15 @@
 import { PropsWithChildren } from 'react'
 
-type EmptyResultProps = {
+type Props = {
   title: string
   text?: string
 }
 
-const EmptyResult = ({
+export default function Empty({
   title,
   text,
   children,
-}: PropsWithChildren<EmptyResultProps>) => {
+}: PropsWithChildren<Props>) {
   return (
     <div className="mt-6 flex h-96 items-center rounded-lg border text-center dark:border-gray-700">
       <div className="mx-auto flex w-full max-w-sm flex-col px-4">
@@ -38,5 +38,3 @@ const EmptyResult = ({
     </div>
   )
 }
-
-export default EmptyResult

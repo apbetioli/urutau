@@ -1,4 +1,4 @@
-import { Story } from "@prisma/client"
+import { Story } from '@prisma/client'
 
 type Props = {
   story: Story

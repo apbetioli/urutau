@@ -1,17 +1,17 @@
 'use client'
 
+import { Speech, Story } from '@prisma/client'
 import { generateSpeech, updateStory } from '@/utils/api'
-import { useAutosave, useDebounce } from 'react-autosave'
-import { useEffect, useState } from 'react'
 
 import Loading from '@/app/loading'
-import { Story } from '@prisma/client'
+import { useAutosave } from 'react-autosave'
+import { useState } from 'react'
 
 type Props = {
-  story: Story
+  story: Story & { speech?: Pick<Speech, 'id'> }
 }
 
-export default function Editor({ story }: Props) {
+export default function StoryEditor({ story }: Props) {
   const [content, setContent] = useState(story.content)
   const [subject, setSubject] = useState(story.subject)
   const [hasSpeech, setHasSpeech] = useState(!!story.speech)
@@ -125,6 +125,7 @@ export default function Editor({ story }: Props) {
             ? 'Generating audio... Please wait'
             : 'Generate audio'}
         </button>
+        <div className="p-8">{isSpeechGenerating && <Loading />}</div>
       </aside>
     </div>
   )
