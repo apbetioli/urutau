@@ -7,7 +7,7 @@ type Props = {
 export default function StoryCard({ story }: Props) {
   const date = new Date(story.createdAt).toLocaleDateString()
   return (
-    <div className="max-w-2xl overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div className="w-full overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
       {story.image && (
         <img
           className="object-cover w-full h-64"
