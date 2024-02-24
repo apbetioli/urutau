@@ -1,8 +1,11 @@
 import Empty from '@/components/Empty'
 import Link from 'next/link'
+import { Story } from '@prisma/client'
 import StoryCard from '@/components/StoryCard'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
+
+type StoryWithImage = Story & { image?: { id: string } }
 
 const geStories = async () => {
   const user = await getUserByClerkId()
@@ -13,11 +16,18 @@ const geStories = async () => {
     orderBy: {
       createdAt: 'desc',
     },
+    include: {
+      image: {
+        select: {
+          id: true,
+        },
+      },
+    },
   })
 }
 
 export default async function StoriesPage() {
-  const stories = await geStories()
+  const stories = (await geStories()) as StoryWithImage[]
 
   return (
     <div className="p-8">
@@ -46,7 +56,7 @@ export default async function StoriesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-5">
           {stories.map((story) => (
             <Link key={story.id} href={`/stories/${story.id}`}>
-              <StoryCard story={story} />
+              <StoryCard story={story} preview />
             </Link>
           ))}
         </div>

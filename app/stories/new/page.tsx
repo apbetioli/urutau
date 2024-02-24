@@ -28,12 +28,10 @@ export default function NewStoryPage() {
   return (
     <div className="w-full h-full flex flex-col p-8">
       <form
-        className="w-full lg:w-1/2 justify-center flex flex-col"
+        className="mx-auto lg:w-1/2 justify-center flex flex-col gap-2"
         onSubmit={generate}
       >
-        <label htmlFor="context" className="mb-2">
-          What`s your story about?
-        </label>
+        <label htmlFor="context">What`s your story about?</label>
         <input
           id="context"
           type="text"
@@ -43,17 +41,19 @@ export default function NewStoryPage() {
           onChange={(e) => setPrompt(e.target.value)}
           required
         />
-        <label htmlFor="language" className="mb-2">
-          Select your language
-        </label>
-        <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <label htmlFor="language">Select your language</label>
+        <select
+          disabled={isLoading}
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
           {languages.map((lang) => (
             <option key={lang} value={lang} label={lang} />
           ))}
         </select>
         <button
           disabled={isLoading}
-          className="bg-primary-600 rounded-sm mt-5 py-2"
+          className="bg-primary-600 font-semibold rounded-lg mt-5 py-4"
           type="submit"
         >
           Generate story

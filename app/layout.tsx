@@ -2,7 +2,6 @@ import './globals.css'
 
 import { ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
-import { Github } from './icons'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { Metadata } from 'next'
@@ -32,15 +31,6 @@ export default function RootLayout({
   ]
 
   const signedInLinks = [{ href: '/stories', label: 'Stories' }]
-
-  const footerLinks = [
-    { href: '/', label: 'Stories', className: 'sm:hidden' },
-    { href: '/', label: 'Pricing', className: 'sm:hidden' },
-    { href: '/', label: 'FAQs', className: 'sm:hidden' },
-    { href: '/', label: 'Terms of service' },
-    { href: '/', label: 'Privacy policy' },
-    { href: 'https://github.com/apbetioli/urutau', label: <Github /> },
-  ]
 
   return (
     <html lang="en" className="dark">
@@ -98,22 +88,6 @@ export default function RootLayout({
             </SignedIn>
           </header>
           <main className="grow">{children}</main>
-          <footer className="flex flex-col sm:flex-row items-center sm:h-20 gap-6 p-8 font-medium border-t border-white/20 text-sm">
-            <span>Urutau © 2024</span>
-            <nav className="flex justify-end grow items-center gap-6 flex-col sm:flex-row ">
-              {footerLinks.map((link) => {
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={link.className}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              })}
-            </nav>
-          </footer>
         </body>
       </ClerkProvider>
     </html>

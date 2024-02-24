@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { generateTTS } from '@/utils/ai'
+import { generateImage } from '@/utils/ai'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 import { revalidatePath } from 'next/cache'
@@ -17,14 +17,11 @@ export const POST = async (
         userId: user.id,
       },
     },
-    include: {
-      speech: true,
-    },
   })
 
-  const buffer = await generateTTS(story.content)
+  const buffer = await generateImage(story.subject)
 
-  const speech = await prisma.speech.upsert({
+  const image = await prisma.image.upsert({
     create: {
       buffer,
       storyId: story.id,
@@ -42,5 +39,5 @@ export const POST = async (
 
   revalidatePath(`/story/${id}`)
 
-  return NextResponse.json({ data: speech })
+  return NextResponse.json({ data: image })
 }

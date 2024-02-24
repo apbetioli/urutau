@@ -1,14 +1,20 @@
 'use client'
 
-import { Speech, Story } from '@prisma/client'
-import { generateSpeech, updateStory } from '@/utils/api'
+import { Image, Speech, Story } from '@prisma/client'
+import { generateImage, generateSpeech, updateStory } from '@/utils/api'
 
 import Loading from '@/app/loading'
+import StoryCard from './StoryCard'
 import { useAutosave } from 'react-autosave'
 import { useState } from 'react'
 
+type StoryWithMedia = Story & {
+  speech?: Pick<Speech, 'id'>
+  image?: Pick<Image, 'id'>
+}
+
 type Props = {
-  story: Story & { speech?: Pick<Speech, 'id'> }
+  story: StoryWithMedia
 }
 
 export default function StoryEditor({ story }: Props) {
@@ -18,6 +24,7 @@ export default function StoryEditor({ story }: Props) {
   const [isSaving, setIsSaving] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isSpeechGenerating, setIsSpeechGenerating] = useState(false)
+  const [isImageGenerating, setIsImageGenerating] = useState(false)
 
   useAutosave({
     data: content,
@@ -57,23 +64,15 @@ export default function StoryEditor({ story }: Props) {
     setIsSpeechGenerating(false)
   }
 
+  const handleGenerateImage = async () => {
+    setIsImageGenerating(true)
+    await generateImage(story.id)
+    setIsImageGenerating(false)
+  }
+
   return (
-    <div className="h-full w-full grid grid-cols-3">
-      <main className="col-span-3 lg:col-span-2 p-8">
-        <div className="relative flex items-center gap-2">
-          {isSaving && (
-            <div className="absolute top-3 right-1 flex items-center gap-2">
-              <Loading /> Saving...
-            </div>
-          )}
-        </div>
-        <textarea
-          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%]"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-      </main>
-      <aside className="col-span-3 lg:col-span-1 flex flex-col gap-4 border-l border-white/20 p-8">
+    <div className="h-full w-full flex flex-col lg:grid lg:grid-cols-3">
+      <aside className="lg:col-span-1 flex flex-col gap-4 border-l border-white/20 lg:p-8">
         {isEditing ? (
           <div className="flex gap-1">
             <input
@@ -101,11 +100,8 @@ export default function StoryEditor({ story }: Props) {
         ) : (
           <h3 onClick={() => setIsEditing((e) => !e)}>{subject}</h3>
         )}
-        <div className="relative">
-          {story.image && (
-            <img src={story.image} alt={story.subject} className="w-full" />
-          )}
-        </div>
+
+        <StoryCard story={story} />
 
         <button
           className="hidden bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
@@ -114,7 +110,7 @@ export default function StoryEditor({ story }: Props) {
           Delete story
         </button>
         {hasSpeech && !isSpeechGenerating && (
-          <audio controls src={`/api/story/${story.id}/speech`} />
+          <audio controls src={`/api/speech/${story.speech?.id}`} />
         )}
         <button
           className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
@@ -127,8 +123,31 @@ export default function StoryEditor({ story }: Props) {
               ? 'Regenerate audio'
               : 'Generate audio'}
         </button>
-        <div>{isSpeechGenerating && <Loading />}</div>
+        <button
+          className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
+          disabled={isImageGenerating}
+          onClick={() => handleGenerateImage()}
+        >
+          {isImageGenerating
+            ? 'Generating image... Please wait'
+            : 'Generate image'}
+        </button>
+        <div>{isImageGenerating && <Loading />}</div>
       </aside>
+      <main className="lg:col-span-2 lg:p-8 grow">
+        <div className="relative flex items-center gap-2">
+          {isSaving && (
+            <div className="absolute top-3 right-1 flex items-center gap-2">
+              <Loading /> Saving...
+            </div>
+          )}
+        </div>
+        <textarea
+          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%]"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      </main>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Speech, Story } from '@prisma/client'
+import { Image, Speech, Story } from '@prisma/client'
 
 import Empty from '@/components/Empty'
 import Link from 'next/link'
@@ -6,7 +6,10 @@ import StoryEditor from '@/components/StoryEditor'
 import { getUserByClerkId } from '@/utils/auth'
 import { prisma } from '@/utils/db'
 
-type StoryWithSpeech = Story & { speech?: Pick<Speech, 'id'> }
+type StoryWithMedia = Story & {
+  speech?: Pick<Speech, 'id'>
+  image?: Pick<Image, 'id'>
+}
 
 const getStory = async (id: string) => {
   const user = await getUserByClerkId()
@@ -23,6 +26,11 @@ const getStory = async (id: string) => {
           id: true,
         },
       },
+      image: {
+        select: {
+          id: true,
+        },
+      },
     },
   })
 }
@@ -32,7 +40,7 @@ export default async function StoryPage({
 }: {
   params: { id: string }
 }) {
-  const story = (await getStory(params.id)) as StoryWithSpeech
+  const story = (await getStory(params.id)) as StoryWithMedia
   return (
     <div className="flex flex-col w-full h-full">
       {story ? (
