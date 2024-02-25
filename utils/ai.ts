@@ -15,9 +15,9 @@ export const generateTTS = async (content: string) => {
 export const generateImage = async (prompt: string) => {
   const openai = new OpenAI()
   const response = await openai.images.generate({
-    model: 'dall-e-2',
+    model: 'dall-e-3',
     prompt,
-    size: '256x256',
+    size: '1024x1024',
     quality: 'standard',
     n: 1,
   })
