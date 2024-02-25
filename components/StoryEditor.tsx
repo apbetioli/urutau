@@ -72,8 +72,8 @@ export default function StoryEditor({ story }: Props) {
 
   return (
     <div className="h-full w-full flex flex-col lg:grid lg:grid-cols-3">
-      <aside className="lg:col-span-1 flex flex-col gap-4 border-l border-white/20 lg:p-8">
-        {isEditing ? (
+      <aside className="lg:col-span-1 flex flex-col gap-4 border-l border-white/20 p-4">
+        {/*isEditing ? (
           <div className="flex gap-1">
             <input
               className="grow"
@@ -99,7 +99,7 @@ export default function StoryEditor({ story }: Props) {
           </div>
         ) : (
           <h3 onClick={() => setIsEditing((e) => !e)}>{subject}</h3>
-        )}
+        )*/}
 
         <StoryCard story={story} />
 
@@ -109,20 +109,20 @@ export default function StoryEditor({ story }: Props) {
         >
           Delete story
         </button>
-        {hasSpeech && !isSpeechGenerating && (
+        {hasSpeech && !isSpeechGenerating ? (
           <audio controls src={`/api/speech/${story.speech?.id}`} />
-        )}
-        <button
-          className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
-          disabled={isSpeechGenerating}
-          onClick={() => handleGenerateSpeech()}
-        >
-          {isSpeechGenerating
-            ? 'Generating audio... Please wait'
-            : hasSpeech
-              ? 'Regenerate audio'
+        ) : (
+          <button
+            className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
+            disabled={isSpeechGenerating}
+            onClick={() => handleGenerateSpeech()}
+          >
+            {isSpeechGenerating
+              ? 'Generating audio... Please wait'
               : 'Generate audio'}
-        </button>
+          </button>
+        )}
+        {/*
         <button
           className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
           disabled={isImageGenerating}
@@ -133,8 +133,9 @@ export default function StoryEditor({ story }: Props) {
             : 'Generate image'}
         </button>
         <div>{isImageGenerating && <Loading />}</div>
+          */}
       </aside>
-      <main className="lg:col-span-2 lg:p-8 grow">
+      <main className="lg:col-span-2 p-4 grow">
         <div className="relative flex items-center gap-2">
           {isSaving && (
             <div className="absolute top-3 right-1 flex items-center gap-2">
@@ -143,7 +144,7 @@ export default function StoryEditor({ story }: Props) {
           )}
         </div>
         <textarea
-          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%]"
+          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%] rounded-lg"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
