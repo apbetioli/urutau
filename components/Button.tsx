@@ -27,7 +27,7 @@ export default function Button({
       <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
       <div
         className={cn(
-          'whitespace-nowrap gap-4 px-8 py-4 rounded-lg relative group transition duration-200 text-white font-semibold',
+          'flex items-center justify-center whitespace-nowrap gap-4 px-8 py-4 rounded-lg relative group transition duration-200 text-white font-semibold',
           className,
           disabled ? 'bg-black' : 'bg-black hover:bg-transparent',
         )}

@@ -1,13 +1,13 @@
 'use client'
 
 import Button from '@/components/Button'
-import Loading from '@/app/loading'
-import { newStory } from '@/utils/api'
+import { Spinner } from '@/components/icons'
+import { createStory } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 export default function NewStoryPage() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
   const [prompt, setPrompt] = useState('')
   const [language, setLanguage] = useState('English')
   const router = useRouter()
@@ -15,12 +15,12 @@ export default function NewStoryPage() {
   const generate = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    setIsLoading(true)
+    setIsGenerating(true)
     try {
-      const { data } = await newStory(prompt, language)
+      const { data } = await createStory(prompt, language)
       router.push(`/stories/${data.id}`)
     } finally {
-      setIsLoading(false)
+      setIsGenerating(false)
     }
   }
 
@@ -36,7 +36,7 @@ export default function NewStoryPage() {
         <input
           id="context"
           type="text"
-          disabled={isLoading}
+          disabled={isGenerating}
           value={prompt}
           placeholder="two little hamsters on vacation"
           onChange={(e) => setPrompt(e.target.value)}
@@ -44,7 +44,7 @@ export default function NewStoryPage() {
         />
         <label htmlFor="language">Select your language</label>
         <select
-          disabled={isLoading}
+          disabled={isGenerating}
           value={language}
           className="mb-3"
           onChange={(e) => setLanguage(e.target.value)}
@@ -53,10 +53,10 @@ export default function NewStoryPage() {
             <option key={lang} value={lang} label={lang} />
           ))}
         </select>
-        <Button disabled={isLoading} type="submit">
-          Generate story
+        <Button disabled={isGenerating} type="submit">
+          {isGenerating && <Spinner />}
+          {isGenerating ? 'Generating story... Please wait' : 'Generate story'}
         </Button>
-        <div className="p-8">{isLoading && <Loading />}</div>
       </form>
     </div>
   )

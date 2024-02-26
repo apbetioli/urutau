@@ -1,6 +1,6 @@
 import { Story } from '@prisma/client'
 
-export const newStory = async (prompt: string, language?: string) => {
+export const createStory = async (prompt: string, language?: string) => {
   const res = await fetch('/api/story', {
     method: 'POST',
     headers: {

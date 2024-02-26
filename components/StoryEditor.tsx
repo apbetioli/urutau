@@ -4,7 +4,7 @@ import { Image, Speech, Story } from '@prisma/client'
 import { generateImage, generateSpeech, updateStory } from '@/utils/api'
 
 import Button from './Button'
-import Loading from '@/app/loading'
+import { Spinner } from './icons'
 import StoryCard from './StoryCard'
 import { useAutosave } from 'react-autosave'
 import { useState } from 'react'
@@ -22,7 +22,7 @@ type Props = {
 export default function StoryEditor({ story }: Props) {
   const [content, setContent] = useState(story.content)
   const [subject, setSubject] = useState(story.subject)
-  const [hasSpeech, setHasSpeech] = useState(!!story.speech)
+  const [speechId, setSpeechId] = useState(story.speech?.id)
   const [isSaving, setIsSaving] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isSpeechGenerating, setIsSpeechGenerating] = useState(false)
@@ -45,12 +45,15 @@ export default function StoryEditor({ story }: Props) {
 
   const updateSubject = async (newSubject: string) => {
     setIsSaving(true)
-    const updated = await updateStory(story.id, {
-      subject: newSubject,
-    })
-    setSubject(updated.data.subject)
-    setIsEditing(false)
-    setIsSaving(false)
+    try {
+      const updated = await updateStory(story.id, {
+        subject: newSubject,
+      })
+      setSubject(updated.data.subject)
+    } finally {
+      setIsEditing(false)
+      setIsSaving(false)
+    }
   }
 
   const handleDelete = async () => {
@@ -59,17 +62,21 @@ export default function StoryEditor({ story }: Props) {
 
   const handleGenerateSpeech = async () => {
     setIsSpeechGenerating(true)
-    const { data } = await generateSpeech(story.id)
-    if (data.id) {
-      setHasSpeech(true)
+    try {
+      const { data } = await generateSpeech(story.id)
+      setSpeechId(data.id)
+    } finally {
+      setIsSpeechGenerating(false)
     }
-    setIsSpeechGenerating(false)
   }
 
   const handleGenerateImage = async () => {
     setIsImageGenerating(true)
-    await generateImage(story.id)
-    setIsImageGenerating(false)
+    try {
+      await generateImage(story.id)
+    } finally {
+      setIsImageGenerating(false)
+    }
   }
 
   return (
@@ -110,13 +117,15 @@ export default function StoryEditor({ story }: Props) {
         >
           Delete story
         </button>
-        {hasSpeech && !isSpeechGenerating ? (
-          <audio controls src={`/api/speech/${story.speech?.id}`} />
+        
+        {speechId && !isSpeechGenerating ? (
+          <audio controls src={`/api/speech/${speechId}`} />
         ) : (
           <Button
             disabled={isSpeechGenerating}
             onClick={() => handleGenerateSpeech()}
           >
+            {isSpeechGenerating && <Spinner />}
             {isSpeechGenerating
               ? 'Generating audio... Please wait'
               : 'Generate audio'}
@@ -131,13 +140,13 @@ export default function StoryEditor({ story }: Props) {
             ? 'Generating image... Please wait'
             : 'Generate image'}
         </Button>
-        <div>{isImageGenerating && <Loading />}</div>
+        <div>{isImageGenerating && <Spinner />}</div>
           */}
       </aside>
       <main className="lg:col-span-2 p-4 grow relative">
         {isSaving && (
           <div className="absolute top-5 left-10 flex items-center gap-2">
-            <Loading /> Saving...
+            <Spinner /> Saving...
           </div>
         )}
         <textarea
