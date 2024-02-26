@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getUserByClerkId } from '@/utils/auth'
-import { prisma } from '@/utils/db'
+import { getUserByClerkId } from '@/utils/server/auth'
+import { prisma } from '@/utils/server/db'
 import { revalidatePath } from 'next/cache'
 
 export const PATCH = async (

@@ -1,5 +1,6 @@
 'use client'
 
+import Button from '@/components/Button'
 import Loading from '@/app/loading'
 import { newStory } from '@/utils/api'
 import { useRouter } from 'next/navigation'
@@ -45,19 +46,16 @@ export default function NewStoryPage() {
         <select
           disabled={isLoading}
           value={language}
+          className='mb-3'
           onChange={(e) => setLanguage(e.target.value)}
         >
           {languages.map((lang) => (
             <option key={lang} value={lang} label={lang} />
           ))}
         </select>
-        <button
-          disabled={isLoading}
-          className="bg-primary-600 font-semibold rounded-lg mt-5 py-4"
-          type="submit"
-        >
+        <Button disabled={isLoading} type="submit" >
           Generate story
-        </button>
+        </Button>
         <div className="p-8">{isLoading && <Loading />}</div>
       </form>
     </div>

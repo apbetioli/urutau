@@ -1,7 +1,7 @@
 import { OpenAI as LangChainOpenAI } from '@langchain/openai'
 import OpenAI from 'openai'
 
-export const generateTTS = async (content: string) => {
+export const generateSpeech = async (content: string) => {
   const openai = new OpenAI()
   const mp3 = await openai.audio.speech.create({
     model: 'tts-1',
@@ -35,8 +35,9 @@ export const generateStory = async (
     modelName: 'gpt-3.5-turbo',
   })
   const refinedPrompt = `Create a new bedtime story in ${language} about ${prompt}, and define the title as the first line`
-  const content = await model.invoke(refinedPrompt)
+  let content = await model.invoke(refinedPrompt)
   const subject = content.split('\n')[0]
+  content = content.substring(subject.length + 1).trim()
 
   return {
     content,

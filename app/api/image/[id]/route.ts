@@ -1,4 +1,4 @@
-import { prisma } from '@/utils/db'
+import { prisma } from '@/utils/server/db'
 
 export const GET = async (
   request: Request,

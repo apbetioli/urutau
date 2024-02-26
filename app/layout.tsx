@@ -26,11 +26,11 @@ export default function RootLayout({
     {
       href: '/sign-up',
       label: 'Sign up',
-      className: 'bg-success-600 hover:bg-success-700 py-1.5 px-2 rounded-lg',
+      className: 'bg-purple-500 hover:bg-purple-600 py-1.5 px-2 rounded-lg',
     },
   ]
 
-  const signedInLinks = [{ href: '/stories', label: 'Stories' }]
+  const signedInLinks = [{ href: '/stories', label: 'My stories' }]
 
   return (
     <html lang="en" className="dark">
@@ -38,7 +38,7 @@ export default function RootLayout({
         appearance={{
           variables: { colorPrimary: '#000000' },
           elements: {
-            formButtonPrimary: 'bg-primary-600 hover:bg-primary-700',
+            formButtonPrimary: 'bg-purple-500 hover:bg-purple-600',
             socialButtonsBlockButton:
               'bg-white border-gray-200 hover:bg-transparent hover:border-black text-gray-600 hover:text-black',
             socialButtonsBlockButtonText: 'font-semibold',
@@ -74,11 +74,7 @@ export default function RootLayout({
             <SignedIn>
               {signedInLinks.map((link) => {
                 return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={link.className}
-                  >
+                  <Link key={link.href} href={link.href}>
                     {link.label}
                   </Link>
                 )

@@ -3,6 +3,7 @@
 import { Image, Speech, Story } from '@prisma/client'
 import { generateImage, generateSpeech, updateStory } from '@/utils/api'
 
+import Button from './Button'
 import Loading from '@/app/loading'
 import StoryCard from './StoryCard'
 import { useAutosave } from 'react-autosave'
@@ -14,7 +15,8 @@ type StoryWithMedia = Story & {
 }
 
 type Props = {
-  story: StoryWithMedia
+  story: StoryWithMedia,
+  edit?: boolean
 }
 
 export default function StoryEditor({ story }: Props) {
@@ -82,13 +84,12 @@ export default function StoryEditor({ story }: Props) {
               disabled={isSaving}
               onChange={(e) => setSubject(e.target.value)}
             />
-            <button
-              className="bg-primary-600 hover:bg-primary-700 p-2 rounded-lg"
+            <Button
               disabled={isSaving}
               onClick={() => updateSubject(subject)}
             >
               Save
-            </button>
+            </Button>
             <button
               className="bg-gray-600 hover:bg-gray-700 p-2 rounded-lg"
               disabled={isSaving}
@@ -112,37 +113,33 @@ export default function StoryEditor({ story }: Props) {
         {hasSpeech && !isSpeechGenerating ? (
           <audio controls src={`/api/speech/${story.speech?.id}`} />
         ) : (
-          <button
-            className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
+          <Button
             disabled={isSpeechGenerating}
             onClick={() => handleGenerateSpeech()}
           >
             {isSpeechGenerating
               ? 'Generating audio... Please wait'
               : 'Generate audio'}
-          </button>
+          </Button>
         )}
         {/*
-        <button
-          className=" bg-primary-600 hover:bg-primary-700 rounded-lg px-4 py-2"
+        <Button
           disabled={isImageGenerating}
           onClick={() => handleGenerateImage()}
         >
           {isImageGenerating
             ? 'Generating image... Please wait'
             : 'Generate image'}
-        </button>
+        </Button>
         <div>{isImageGenerating && <Loading />}</div>
           */}
       </aside>
-      <main className="lg:col-span-2 p-4 grow">
-        <div className="relative flex items-center gap-2">
-          {isSaving && (
-            <div className="absolute top-3 right-1 flex items-center gap-2">
-              <Loading /> Saving...
-            </div>
-          )}
-        </div>
+      <main className="lg:col-span-2 p-4 grow relative">
+        {isSaving && (
+          <div className="absolute top-5 left-10 flex items-center gap-2">
+            <Loading /> Saving...
+          </div>
+        )}
         <textarea
           className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%] rounded-lg"
           value={content}

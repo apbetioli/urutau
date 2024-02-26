@@ -1,3 +1,4 @@
+import Button from '@/components/Button'
 import { Github } from './icons'
 import GradientBackground from '@/components/GradientBackground'
 import Link from 'next/link'
@@ -23,11 +24,8 @@ export default function HomePage() {
           </p>
 
           <div>
-            <Link
-              href="/stories"
-              className="bg-primary-600 hover:bg-primary-700 px-4 py-2 rounded-lg text-xl text-white"
-            >
-              Get started
+            <Link href="/stories">
+              <Button>Get started</Button>
             </Link>
           </div>
         </div>

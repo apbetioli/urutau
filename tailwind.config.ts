@@ -6,17 +6,14 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        'primary-600': '#6C47FF',
-        'primary-700': '#5639CC',
-        'success-600': '#0D8050',
-        'success-700': '#027A48',
-      },
-    },
-  },
+  theme: {},
   plugins: [require('@tailwindcss/forms')],
   darkMode: 'class',
+  variants: {
+    extend: {
+      backgroundColor: ['disabled'],
+      textColor: ['disabled'],
+    },
+  },
 }
 export default config

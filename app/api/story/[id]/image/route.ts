@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { generateImage } from '@/utils/ai'
-import { getUserByClerkId } from '@/utils/auth'
-import { prisma } from '@/utils/db'
+import { generateImage } from '@/utils/server/ai'
+import { getUserByClerkId } from '@/utils/server/auth'
+import { prisma } from '@/utils/server/db'
 import { revalidatePath } from 'next/cache'
 
 export const POST = async (
