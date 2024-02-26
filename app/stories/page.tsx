@@ -8,7 +8,7 @@ import { prisma } from '@/utils/server/db'
 
 type StoryWithImage = Story & { image?: { id: string } }
 
-const geStories = async () => {
+const getStories = async () => {
   const user = await getUserByClerkId()
   return await prisma.story.findMany({
     where: {
@@ -34,7 +34,7 @@ const NewStoryButton = () => (
 )
 
 export default async function StoriesPage() {
-  const stories = (await geStories()) as StoryWithImage[]
+  const stories = (await getStories()) as StoryWithImage[]
 
   return (
     <div className="p-8">

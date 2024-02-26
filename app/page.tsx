@@ -1,5 +1,5 @@
 import Button from '@/components/Button'
-import { Github } from './icons'
+import { Github } from '../components/icons'
 import GradientBackground from '@/components/GradientBackground'
 import Link from 'next/link'
 
@@ -18,7 +18,7 @@ export default function HomePage() {
         <div className="flex flex-col max-w-xl gap-8 p-8">
           <h1 className="text-6xl">AI generated bedtime stories</h1>
           <p className="text-2xl text-white/60">
-            When your son wants more stories, and you have no ideas left, Urutau
+            When your kid wants more stories, and you have no ideas left, Urutau
             is here to help! Create lovely stories for reading, generate audio
             for listening, and even create a magic picture.
           </p>
