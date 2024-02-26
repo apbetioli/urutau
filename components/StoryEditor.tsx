@@ -117,7 +117,7 @@ export default function StoryEditor({ story }: Props) {
         >
           Delete story
         </button>
-        
+
         {speechId && !isSpeechGenerating ? (
           <audio controls src={`/api/speech/${speechId}`} />
         ) : (

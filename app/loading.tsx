@@ -1,4 +1,4 @@
-import { Spinner } from "@/components/icons";
+import { Spinner } from '@/components/icons'
 
 export default function LoadingPage() {
   return (
@@ -6,7 +6,7 @@ export default function LoadingPage() {
       className="flex h-full w-full justify-center items-center"
       role="status"
     >
-      <Spinner/>
+      <Spinner />
       <span className="sr-only">Loading...</span>
     </div>
   )
