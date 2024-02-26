@@ -5,11 +5,10 @@ import Link from 'next/link'
 
 export default function HomePage() {
   const footerLinks = [
-    { href: '/', label: 'Stories', className: 'sm:hidden' },
-    { href: '/', label: 'Pricing', className: 'sm:hidden' },
-    { href: '/', label: 'FAQs', className: 'sm:hidden' },
-    { href: '/', label: 'Terms of service' },
-    { href: '/', label: 'Privacy policy' },
+    { href: '/soon', label: 'Pricing', className: 'sm:hidden' },
+    { href: '/soon', label: 'FAQs', className: 'sm:hidden' },
+    { href: '/soon', label: 'Terms of service' },
+    { href: '/soon', label: 'Privacy policy' },
     { href: 'https://github.com/apbetioli/urutau', label: <Github /> },
   ]
   return (

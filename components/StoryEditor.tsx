@@ -1,13 +1,8 @@
 'use client'
 
 import { Image, Speech, Story } from '@prisma/client'
-import { generateImage, generateSpeech, updateStory } from '@/utils/api'
 
-import Button from './Button'
-import { Spinner } from './icons'
 import StoryCard from './StoryCard'
-import { useAutosave } from 'react-autosave'
-import { useState } from 'react'
 
 type StoryWithMedia = Story & {
   speech?: Pick<Speech, 'id'>
@@ -20,156 +15,22 @@ type Props = {
 }
 
 export default function StoryEditor({ story }: Props) {
-  const [content, setContent] = useState(story.content)
-  const [subject, setSubject] = useState(story.subject)
-  const [speechId, setSpeechId] = useState(story.speech?.id)
-  const [isSaving, setIsSaving] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-  const [isSpeechGenerating, setIsSpeechGenerating] = useState(false)
-  const [isImageGenerating, setIsImageGenerating] = useState(false)
-
-  useAutosave({
-    data: content,
-    onSave: async (newContent) => {
-      setIsSaving(true)
-      try {
-        await updateStory(story.id, {
-          content: newContent,
-        })
-      } finally {
-        setIsSaving(false)
-      }
-    },
-    interval: 2000,
-  })
-
-  const updateSubject = async (newSubject: string) => {
-    setIsSaving(true)
-    try {
-      const updated = await updateStory(story.id, {
-        subject: newSubject,
-      })
-      setSubject(updated.data.subject)
-    } finally {
-      setIsEditing(false)
-      setIsSaving(false)
-    }
-  }
-
-  const handleDelete = async () => {
-    console.log('TODO delete')
-  }
-
-  const handleGenerateSpeech = async () => {
-    setIsSpeechGenerating(true)
-    try {
-      const { data } = await generateSpeech(story.id)
-      setSpeechId(data.id)
-    } finally {
-      setIsSpeechGenerating(false)
-    }
-  }
-
-  const handleGenerateImage = async () => {
-    setIsImageGenerating(true)
-    try {
-      await generateImage(story.id)
-    } finally {
-      setIsImageGenerating(false)
-    }
-  }
-
   return (
     <div className="h-full w-full flex flex-col md:grid md:grid-cols-3">
       <aside className="md:col-span-1 flex flex-col gap-4 border-l border-white/20 p-4">
-        {/*isEditing ? (
-          <div className="flex gap-1">
-            <input
-              className="grow"
-              type="text"
-              value={subject}
-              disabled={isSaving}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-            <Button
-              disabled={isSaving}
-              onClick={() => updateSubject(subject)}
-            >
-              Save
-            </Button>
-            <button
-              className="bg-gray-600 hover:bg-gray-700 p-2 rounded-lg"
-              disabled={isSaving}
-              onClick={() => setIsEditing(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        ) : (
-          <h3 onClick={() => setIsEditing((e) => !e)}>{subject}</h3>
-        )*/}
-
         <StoryCard story={story} />
-
-        {speechId && <audio controls src={`/api/speech/${speechId}`} />}
-        {/*
-        <button
-          className="hidden bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
-          onClick={() => handleDelete()}
-        >
-          Delete story
-          </button>
-          <audio controls src={`/api/speech/${speechId}`} />
-          {speechId && !isSpeechGenerating ? (
-        ) : (
-          <Button
-            disabled={isSpeechGenerating}
-            onClick={() => handleGenerateSpeech()}
-          >
-            {isSpeechGenerating && <Spinner />}
-            {isSpeechGenerating
-              ? 'Generating audio... Please wait'
-              : 'Generate audio'}
-          </Button>
-        )}
-        
-        <Button
-          disabled={isImageGenerating}
-          onClick={() => handleGenerateImage()}
-        >
-          {isImageGenerating
-            ? 'Generating image... Please wait'
-            : 'Generate image'}
-        </Button>
-        <div>{isImageGenerating && <Spinner />}</div>
-          */}
       </aside>
 
       <main className="md:col-span-2 p-4 grow relative">
-        {isEditing ? (
-          <>
-            {isSaving && (
-              <div className="absolute top-5 left-10 flex items-center gap-2">
-                <Spinner /> Saving...
-              </div>
-            )}
-            <textarea
-              className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%] rounded-lg"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </>
-        ) : (
-          <div className="bg-gray-800 rounded-lg p-4 h-full">
-            {content.split('\n').map((paragraph, index) => {
-              return (
-                <p key={index} className="mb-3">
-                  {paragraph}
-                </p>
-              )
-            })}
-          </div>
-        )}
+        <div className="bg-gray-800 rounded-lg p-4 h-full">
+          {story.content.split('\n').map((paragraph, index) => {
+            return (
+              <p key={index} className="mb-3">
+                {paragraph}
+              </p>
+            )
+          })}
+        </div>
       </main>
     </div>
   )

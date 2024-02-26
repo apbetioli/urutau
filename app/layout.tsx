@@ -19,9 +19,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const signedOutLinks = [
-    { href: '/stories', label: 'Stories', className: 'hidden sm:block' },
-    { href: '/', label: 'Pricing', className: 'hidden sm:block' },
-    { href: '/', label: 'FAQs', className: 'hidden sm:block' },
+    { href: '/', label: 'Home', className: 'hidden sm:block' },
+    { href: '/soon', label: 'Pricing', className: 'hidden sm:block' },
+    { href: '/soon', label: 'FAQs', className: 'hidden sm:block' },
     { href: '/sign-in', label: 'Log in' },
     {
       href: '/sign-up',

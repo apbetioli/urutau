@@ -1,10 +1,16 @@
-import Image from 'next/image'
+import { Image, Speech, Story } from '@prisma/client'
+
+import NextImage from 'next/image'
 import { PropsWithChildren } from 'react'
-import { Story } from '@prisma/client'
 import { cn } from '@/utils/cn'
 
+type StoryWithMedia = Story & {
+  speech?: Pick<Speech, 'id'>
+  image?: Pick<Image, 'id'>
+}
+
 type Props = {
-  story: Story & { image?: { id: string } }
+  story: StoryWithMedia
   previewContent?: boolean
   className?: string
 }
@@ -24,7 +30,7 @@ export default function StoryCard({
       )}
     >
       {story.image && (
-        <Image
+        <NextImage
           className="object-cover w-full"
           src={`/api/image/${story.image.id}`}
           alt={story.subject}
@@ -42,12 +48,16 @@ export default function StoryCard({
         </h3>
         {preview && (
           <p className="mt-3 text-gray-500 dark:text-gray-400">
-            {story.content.slice(
-              story.subject.length + 1,
-              story.subject.length + 100,
-            )}
+            {story.content.slice(0, 100)}
             ...
           </p>
+        )}
+        {!preview && (
+          <audio
+            className="mt-3"
+            controls
+            src={`/api/speech/${story.speech?.id}`}
+          />
         )}
         {children}
       </div>
