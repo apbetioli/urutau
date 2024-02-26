@@ -46,14 +46,14 @@ export default function NewStoryPage() {
         <select
           disabled={isLoading}
           value={language}
-          className='mb-3'
+          className="mb-3"
           onChange={(e) => setLanguage(e.target.value)}
         >
           {languages.map((lang) => (
             <option key={lang} value={lang} label={lang} />
           ))}
         </select>
-        <Button disabled={isLoading} type="submit" >
+        <Button disabled={isLoading} type="submit">
           Generate story
         </Button>
         <div className="p-8">{isLoading && <Loading />}</div>

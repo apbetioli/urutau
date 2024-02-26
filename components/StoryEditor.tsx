@@ -15,7 +15,7 @@ type StoryWithMedia = Story & {
 }
 
 type Props = {
-  story: StoryWithMedia,
+  story: StoryWithMedia
   edit?: boolean
 }
 
