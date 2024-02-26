@@ -80,8 +80,8 @@ export default function StoryEditor({ story }: Props) {
   }
 
   return (
-    <div className="h-full w-full flex flex-col lg:grid lg:grid-cols-3">
-      <aside className="lg:col-span-1 flex flex-col gap-4 border-l border-white/20 p-4">
+    <div className="h-full w-full flex flex-col md:grid md:grid-cols-3">
+      <aside className="md:col-span-1 flex flex-col gap-4 border-l border-white/20 p-4">
         {/*isEditing ? (
           <div className="flex gap-1">
             <input
@@ -111,15 +111,16 @@ export default function StoryEditor({ story }: Props) {
 
         <StoryCard story={story} />
 
+        {speechId && <audio controls src={`/api/speech/${speechId}`} />}
+        {/*
         <button
           className="hidden bg-red-600 px-4 py-2 rounded-lg text-xl text-white"
           onClick={() => handleDelete()}
         >
           Delete story
-        </button>
-
-        {speechId && !isSpeechGenerating ? (
+          </button>
           <audio controls src={`/api/speech/${speechId}`} />
+          {speechId && !isSpeechGenerating ? (
         ) : (
           <Button
             disabled={isSpeechGenerating}
@@ -131,7 +132,7 @@ export default function StoryEditor({ story }: Props) {
               : 'Generate audio'}
           </Button>
         )}
-        {/*
+        
         <Button
           disabled={isImageGenerating}
           onClick={() => handleGenerateImage()}
@@ -143,17 +144,32 @@ export default function StoryEditor({ story }: Props) {
         <div>{isImageGenerating && <Spinner />}</div>
           */}
       </aside>
-      <main className="lg:col-span-2 p-4 grow relative">
-        {isSaving && (
-          <div className="absolute top-5 left-10 flex items-center gap-2">
-            <Spinner /> Saving...
+
+      <main className="md:col-span-2 p-4 grow relative">
+        {isEditing ? (
+          <>
+            {isSaving && (
+              <div className="absolute top-5 left-10 flex items-center gap-2">
+                <Spinner /> Saving...
+              </div>
+            )}
+            <textarea
+              className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%] rounded-lg"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </>
+        ) : (
+          <div className="bg-gray-800 rounded-lg p-4 h-full">
+            {content.split('\n').map((paragraph, index) => {
+              return (
+                <p key={index} className="mb-3">
+                  {paragraph}
+                </p>
+              )
+            })}
           </div>
         )}
-        <textarea
-          className="bg-slate-800 p-10 text-2xl outline-none w-full h-[90%] rounded-lg"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
       </main>
     </div>
   )

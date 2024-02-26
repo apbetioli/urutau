@@ -1,4 +1,4 @@
-import { generateImage, generateStory } from '@/utils/server/ai'
+import { generateImage, generateSpeech, generateStory } from '@/utils/server/ai'
 
 import { NextResponse } from 'next/server'
 import { getUserByClerkId } from '@/utils/server/auth'
@@ -18,13 +18,24 @@ export const POST = async (request: Request) => {
     },
   })
 
-  const imageBuffer = await generateImage(story.subject)
-  await prisma.image.create({
-    data: {
-      buffer: imageBuffer,
-      storyId: story.id,
-    },
-  })
+  await Promise.all([
+    generateImage(story.subject).then((buffer) =>
+      prisma.image.create({
+        data: {
+          buffer,
+          storyId: story.id,
+        },
+      }),
+    ),
+    generateSpeech(`${story.subject}.\n${story.content}`).then((buffer) =>
+      prisma.speech.create({
+        data: {
+          buffer,
+          storyId: story.id,
+        },
+      }),
+    ),
+  ])
 
   revalidatePath('/stories')
 

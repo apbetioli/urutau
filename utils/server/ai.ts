@@ -34,7 +34,7 @@ export const generateStory = async (
     temperature: 0,
     modelName: 'gpt-3.5-turbo',
   })
-  const refinedPrompt = `Create a new bedtime story in ${language} about ${prompt}, and define the title as the first line`
+  const refinedPrompt = `Create a new story in ${language} about ${prompt}, and define the title as the first line`
   let content = await model.invoke(refinedPrompt)
   const subject = content.split('\n')[0]
   content = content.substring(subject.length + 1).trim()
