@@ -22,7 +22,6 @@ Why Urutau? The first name that came to my mind is a bird from South America tha
 
 ![image](https://github.com/apbetioli/urutau/assets/2829329/471e5f0d-a184-4cea-8309-e19d962cf4bd)
 
-
 ## Technologies
 
 This project was built with:
@@ -38,10 +37,13 @@ Currently, it supports only OpenAI. More to come...
 
 ## Getting Started
 
+### Configure environment variables
+
+Copy `.env.template` to `.env.local` and fill the variables.
+
+### Run
+
 ```bash
 npm install
-npx prisma generate
 npm run dev
 ```
-
-Follow the instructions on the terminal.
