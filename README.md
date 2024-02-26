@@ -8,7 +8,7 @@ This is a bedtime stories generator that uses AI for:
 - generating the audio with TTS
 - generating the cover image
 
-All stories, audio and images are kept in a database so that I can read and play it again, again, and again...
+All stories, audio, and images are kept in a database so that I can read and play them again and again (and again...).
 
 It is designed to support stories generated in many languages.
 
@@ -16,7 +16,7 @@ Why Urutau? The first name that came to my mind is a bird from South America tha
 
 ## Screenshots
 
-![image](https://github.com/apbetioli/urutau/assets/2829329/708de9ed-50bb-43ca-b0f1-21ce35b57e7a)
+![image](https://github.com/apbetioli/urutau/assets/2829329/6d3028be-7de4-4096-af6f-c954c6968b67)
 
 ![image](https://github.com/apbetioli/urutau/assets/2829329/fd425dc0-8bcb-4a9c-995c-05055ac698d7)
 
