@@ -1,6 +1,6 @@
 # Urutau
 
-My son loves listening to bedtime stories. We have a player with some recorded stories, but he always asks for one story from my imagination. I'm not so creative in imagining stories, so that was the sparkle of this project.
+My son loves listening to bedtime stories. We have a player with some recorded stories, but he always asks for one story from my imagination. So, I built this to help me. 
 
 This is a bedtime stories generator that uses AI for:
 
@@ -26,12 +26,12 @@ Why Urutau? The first name that came to my mind is a bird from South America tha
 
 This project was built with:
 
-- Next.js - pure magic
-- Typescript - let's make it harder
+- Next.js     - pure magic
+- Typescript  - let's make it harder
 - TailwindCSS - a bit of color
-- Prisma - no SQL
-- Clerk - identify yourself
-- Langchain - talk to the AI
+- Prisma      - no SQL
+- Clerk       - identify yourself
+- Langchain   - talk to the AI
 
 Currently, it supports only OpenAI. More to come...
 
@@ -39,7 +39,7 @@ Currently, it supports only OpenAI. More to come...
 
 ### Configure environment variables
 
-Copy `.env.template` to `.env.local` and fill the variables.
+Copy `.env.template` to `.env.local` and fill in the variables.
 
 ### Run
 
