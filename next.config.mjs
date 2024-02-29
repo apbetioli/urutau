@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['urutau-kappa.vercel.app'],
+    remotePatterns: {
+      hostname: 'urutau-kappa.vercel.app',
+    },
   },
 }
 

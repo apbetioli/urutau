@@ -2,6 +2,7 @@
 
 import { Image, Speech, Story } from '@prisma/client'
 
+import NextImage from 'next/image'
 import { PropsWithChildren } from 'react'
 import { cn } from '@/utils/cn'
 
@@ -31,10 +32,12 @@ export default function StoryCard({
       )}
     >
       {story.image && (
-        <img
+        <NextImage
           className="object-cover w-full"
           src={`/api/story/${story.id}/image`}
           alt={story.subject}
+          width={1024}
+          height={1024}
         />
       )}
 
