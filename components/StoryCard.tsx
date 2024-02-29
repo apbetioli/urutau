@@ -52,11 +52,11 @@ export default function StoryCard({
             ...
           </p>
         )}
-        {!preview && (
+        {!preview && story.speech && (
           <audio
             className="mt-3"
             controls
-            src={`/api/speech/${story.speech?.id}`}
+            src={`/api/speech/${story.speech.id}`}
           />
         )}
         {children}
