@@ -4,6 +4,8 @@ import { getUserByClerkId } from '@/utils/server/auth'
 import { prisma } from '@/utils/server/db'
 import { revalidatePath } from 'next/cache'
 
+export const maxDuration = 300
+
 export const POST = async (
   request: Request,
   { params }: { params: { id: string } },
