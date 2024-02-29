@@ -26,6 +26,7 @@ export const PATCH = async (
   })
 
   revalidatePath('/stories')
+  revalidatePath(`/stories/${id}`)
 
   return NextResponse.json({ data: story })
 }
