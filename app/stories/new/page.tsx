@@ -19,7 +19,8 @@ export default function NewStoryPage() {
     try {
       const { data } = await createStory(prompt, language)
       router.push(`/stories/${data.id}`)
-    } finally {
+    } catch (e) {
+      console.error(e)
       setIsGenerating(false)
     }
   }
