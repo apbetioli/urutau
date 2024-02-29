@@ -15,7 +15,6 @@ export const GET = async (
   return new Response(image.buffer, {
     status: 200,
     headers: {
-      'Content-Disposition': 'attachment; filename=image.jpg',
       'Content-Type': 'image/jpeg',
     },
   })

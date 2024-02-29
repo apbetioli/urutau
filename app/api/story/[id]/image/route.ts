@@ -39,7 +39,39 @@ export const POST = async (
     },
   })
 
-  revalidatePath(`/story/${id}`)
+  revalidatePath(`/stories/${id}`)
 
   return NextResponse.json({ data: image })
+}
+
+export const GET = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
+  const user = await getUserByClerkId()
+  const { id } = params
+  const story = await prisma.story.findUniqueOrThrow({
+    where: {
+      id_userId: {
+        id,
+        userId: user.id,
+      },
+    },
+    include: {
+      image: true,
+    },
+  })
+
+  if (!story.image) {
+    return new Response(null, {
+      status: 404,
+    })
+  }
+
+  return new Response(story.image.buffer, {
+    status: 200,
+    headers: {
+      'Content-Type': 'image/jpeg',
+    },
+  })
 }

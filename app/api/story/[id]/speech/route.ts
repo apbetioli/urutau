@@ -42,7 +42,39 @@ export const POST = async (
     },
   })
 
-  revalidatePath(`/story/${id}`)
+  revalidatePath(`/stories/${id}`)
 
   return NextResponse.json({ data: speech })
+}
+
+export const GET = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
+  const user = await getUserByClerkId()
+  const { id } = params
+  const story = await prisma.story.findUniqueOrThrow({
+    where: {
+      id_userId: {
+        id,
+        userId: user.id,
+      },
+    },
+    include: {
+      speech: true,
+    },
+  })
+
+  if (!story.speech) {
+    return new Response(null, {
+      status: 404,
+    })
+  }
+
+  return new Response(story.speech.buffer, {
+    status: 200,
+    headers: {
+      'Content-Type': 'audio/mpeg',
+    },
+  })
 }

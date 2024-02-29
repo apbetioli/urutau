@@ -15,7 +15,6 @@ export const GET = async (
   return new Response(speech.buffer, {
     status: 200,
     headers: {
-      'Content-Disposition': 'attachment; filename=story.mp3',
       'Content-Type': 'audio/mpeg',
     },
   })
