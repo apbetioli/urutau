@@ -15,11 +15,12 @@ export default function HomePage() {
     <>
       <main className="flex h-[calc(100%-5rem)] justify-center items-center">
         <div className="flex flex-col max-w-xl gap-8 p-8">
-          <h1 className="text-6xl">AI generated bedtime stories</h1>
+          <h1 className="text-6xl">Magic stories</h1>
           <p className="text-2xl text-white/60">
-            When your kid wants more stories, and you have no ideas left, Urutau
-            is here to help! Create lovely stories for reading, generate audio
-            for listening, and even create a magic picture.
+            Give your kids a magical experience every night with the power of
+            AI, and never run out of bedtime stories again. Create delightful
+            tales both in written and audio format for your little ones to
+            enjoy.
           </p>
 
           <div>

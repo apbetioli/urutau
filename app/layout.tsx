@@ -83,7 +83,7 @@ export default function RootLayout({
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </header>
-          <main className="grow">{children}</main>
+          <main className="h-full grow">{children}</main>
         </body>
       </ClerkProvider>
     </html>
