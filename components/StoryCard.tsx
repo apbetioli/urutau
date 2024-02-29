@@ -1,3 +1,5 @@
+'use client'
+
 import { Image, Speech, Story } from '@prisma/client'
 
 import NextImage from 'next/image'
@@ -34,8 +36,8 @@ export default function StoryCard({
           className="object-cover w-full"
           src={`/api/image/${story.image.id}`}
           alt={story.subject}
-          width={256}
-          height={256}
+          width={1024}
+          height={1024}
         />
       )}
 
