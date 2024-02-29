@@ -29,7 +29,7 @@ export default function NewStoryPage() {
   return (
     <div className="w-full h-full flex flex-col p-8">
       <form
-        className="mx-auto lg:w-1/2 justify-center flex flex-col gap-2"
+        className="lg:mx-auto lg:w-1/2 w-full justify-center flex flex-col gap-2"
         onSubmit={generate}
       >
         <label htmlFor="context">What`s your story about?</label>
