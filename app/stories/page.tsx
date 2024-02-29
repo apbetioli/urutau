@@ -28,7 +28,7 @@ const getStories = async () => {
 
   return stories.map((story) => {
     if (story.image && process.env.NEXT_PUBLIC_VERCEL_URL) {
-      story.image.url = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/stories/${story.id}/image`
+      story.image.url = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/story/${story.id}/image`
     }
     return story
   })
