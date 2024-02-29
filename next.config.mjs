@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: 'urutau-**.vercel.app',
+        hostname: '**.vercel.app',
       },
     ],
   },
