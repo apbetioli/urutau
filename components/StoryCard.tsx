@@ -34,7 +34,7 @@ export default function StoryCard({
       {story.image && (
         <NextImage
           className="object-cover w-full"
-          src={`/api/image/${story.image.id}`}
+          src={`/api/story/${story.id}/image`}
           alt={story.subject}
           width={1024}
           height={1024}
@@ -58,7 +58,7 @@ export default function StoryCard({
           <audio
             className="mt-3"
             controls
-            src={`/api/speech/${story.speech.id}`}
+            src={`/api/story/${story.id}/speech`}
           />
         )}
         {children}
