@@ -6,11 +6,11 @@ import StoryCard from '@/components/StoryCard'
 import { getUserByClerkId } from '@/utils/server/auth'
 import { prisma } from '@/utils/server/db'
 
-type StoryWithImage = Story & { image?: { id: string } }
+type StoryWithImage = Story & { image?: { id: string; url: string } }
 
 const getStories = async () => {
   const user = await getUserByClerkId()
-  return await prisma.story.findMany({
+  const stories = (await prisma.story.findMany({
     where: {
       userId: user.id,
     },
@@ -24,6 +24,13 @@ const getStories = async () => {
         },
       },
     },
+  })) as StoryWithImage[]
+
+  return stories.map((story) => {
+    if (story.image) {
+      story.image.url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/stories/${story.id}/image`
+    }
+    return story
   })
 }
 
@@ -34,7 +41,7 @@ const NewStoryButton = () => (
 )
 
 export default async function StoriesPage() {
-  const stories = (await getStories()) as StoryWithImage[]
+  const stories = await getStories()
 
   return (
     <div className="p-8">

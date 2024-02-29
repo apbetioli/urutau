@@ -8,7 +8,7 @@ import { cn } from '@/utils/cn'
 
 type StoryWithMedia = Story & {
   speech?: Pick<Speech, 'id'>
-  image?: Pick<Image, 'id'>
+  image?: Pick<Image, 'id'> & { url?: string }
 }
 
 type Props = {
@@ -34,7 +34,7 @@ export default function StoryCard({
       {story.image && (
         <NextImage
           className="object-cover w-full"
-          src={`/api/story/${story.id}/image`}
+          src={story.image.url || `/api/story/${story.id}/image`}
           alt={story.subject}
           width={1024}
           height={1024}
