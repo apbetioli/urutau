@@ -20,7 +20,7 @@ export const getUserByClerkId = async () => {
       data: {
         clerkId: userId,
         email: clerkUser.emailAddresses[0].emailAddress,
-        name: clerkUser.firstName + ' ' + clerkUser.lastName
+        name: clerkUser.firstName + ' ' + clerkUser.lastName,
       },
     })
   }
