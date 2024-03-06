@@ -1,10 +1,10 @@
 import './globals.css'
 
-import { ClerkProvider, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 
-import { Inter } from 'next/font/google'
-import Link from 'next/link'
+import Header from '@/components/Header'
 import { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,19 +18,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const signedOutLinks = [
-    { href: '/', label: 'Home', className: 'hidden sm:block' },
-    { href: '/soon', label: 'Pricing', className: 'hidden sm:block' },
-    { href: '/soon', label: 'FAQs', className: 'hidden sm:block' },
-    { href: '/sign-in', label: 'Log in' },
-    {
-      href: '/sign-up',
-      label: 'Sign up',
-      className: 'bg-purple-500 hover:bg-purple-600 py-1.5 px-2 rounded-lg',
-    },
-  ]
-
-  const signedInLinks = [{ href: '/stories', label: 'My stories' }]
+  const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
 
   return (
     <html lang="en" className="dark">
@@ -51,38 +39,7 @@ export default function RootLayout({
         }}
       >
         <body className={`${inter.className} h-screen flex flex-col `}>
-          <header className="flex w-full items-center h-20 gap-6 px-8 border-b border-white/20 font-semibold">
-            <Link href="/" className="flex items-center h-20 gap-2 sm:gap-4">
-              <h1 className="text-3xl font-bold">Urutau</h1>
-            </Link>
-
-            <div className="grow" />
-            <SignedOut>
-              {signedOutLinks.map((link) => {
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={link.className}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              })}
-            </SignedOut>
-
-            <SignedIn>
-              {signedInLinks.map((link) => {
-                return (
-                  <Link key={link.href} href={link.href}>
-                    {link.label}
-                  </Link>
-                )
-              })}
-
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-          </header>
+          <Header />
           <main className="h-full grow">{children}</main>
         </body>
       </ClerkProvider>

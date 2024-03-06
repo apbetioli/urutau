@@ -1,16 +1,9 @@
 import Button from '@/components/Button'
-import { Github } from '../components/icons'
+import Footer from '@/components/Footer'
 import GradientBackground from '@/components/GradientBackground'
 import Link from 'next/link'
 
 export default function HomePage() {
-  const footerLinks = [
-    { href: '/soon', label: 'Pricing', className: 'sm:hidden' },
-    { href: '/soon', label: 'FAQs', className: 'sm:hidden' },
-    { href: '/soon', label: 'Terms of service' },
-    { href: '/soon', label: 'Privacy policy' },
-    { href: 'https://github.com/apbetioli/urutau', label: <Github /> },
-  ]
   return (
     <>
       <main className="flex h-[calc(100%-5rem)] justify-center items-center">
@@ -31,18 +24,7 @@ export default function HomePage() {
         </div>
         <GradientBackground />
       </main>
-      <footer className="flex flex-col sm:flex-row items-center sm:h-20 gap-6 p-8 font-medium border-t border-white/20 text-sm">
-        <span>Urutau © 2024</span>
-        <nav className="flex justify-end grow items-center gap-6 flex-col sm:flex-row ">
-          {footerLinks.map((link) => {
-            return (
-              <Link key={link.href} href={link.href} className={link.className}>
-                {link.label}
-              </Link>
-            )
-          })}
-        </nav>
-      </footer>
+      <Footer />
     </>
   )
 }
