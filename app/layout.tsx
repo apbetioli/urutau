@@ -3,6 +3,7 @@ import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import Header from '@/components/Header'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -41,6 +42,7 @@ export default function RootLayout({
         <body className={`${inter.className} h-screen flex flex-col `}>
           <Header />
           <main className="h-full grow">{children}</main>
+          {gaId && <GoogleAnalytics gaId={gaId} />}
         </body>
       </ClerkProvider>
     </html>
