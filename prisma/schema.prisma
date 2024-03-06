@@ -33,6 +33,7 @@ model Story {
   content   String   @db.Text
   prompt    String   @db.Text
   subject   String   @db.Text
+  language  String   @default("en-US")
   speech    Speech?
   image     Image?
 
