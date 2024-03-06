@@ -8,6 +8,7 @@ export default authMiddleware({
     '/api/image/(.*)',
     '/api/speech/(.*)',
     '/stories/(.*)',
+    '/api/stories(.*)',
   ],
 })
 

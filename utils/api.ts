@@ -1,5 +1,26 @@
 import { Story } from '@prisma/client'
 
+export const getStories = async (
+  skip?: number,
+  take?: number,
+  feed = false,
+) => {
+  const params = new URLSearchParams()
+  if (skip) params.set('skip', String(skip))
+  if (take) params.set('take', String(take))
+  if (feed) params.set('feed', String(feed))
+
+  const res = await fetch(`/api/stories?${params}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  if (res.ok) {
+    return await res.json()
+  }
+}
+
 export const createStory = async (prompt: string, language?: string) => {
   const res = await fetch('/api/story', {
     method: 'POST',
