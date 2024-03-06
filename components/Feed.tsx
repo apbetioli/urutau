@@ -24,7 +24,7 @@ export default function Feed({
   const [stories, setStories] = useState<StoryWithMedia[]>([])
   const [isLoading, setLoading] = useState(true)
   const [isLoadingMore, setLoadingMore] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
+  const [hasMore, setHasMore] = useState(false)
 
   const [take, setTake] = useState(10)
   const [skip, setSkip] = useState(0)
@@ -34,6 +34,7 @@ export default function Feed({
     setStories([...stories, ...data])
     if (data.length > 0) {
       setSkip(skip + take)
+      setHasMore(true)
     } else {
       setHasMore(false)
     }
