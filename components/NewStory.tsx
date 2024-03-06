@@ -3,9 +3,7 @@
 import Button from '@/components/Button'
 import { Spinner } from '@/components/icons'
 import { createStory } from '@/utils/api'
-import { getUserByClerkId } from '@/utils/server/auth'
-import useLanguage, { LANGUAGES } from '@/utils/useLanguage'
-import { auth } from '@clerk/nextjs'
+import useLanguage from '@/utils/useLanguage'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -20,7 +18,7 @@ export default function NewStory() {
 
     setIsGenerating(true)
     try {
-      const { data } = await createStory(prompt, LANGUAGES[language])
+      const { data } = await createStory(prompt, language)
       router.push(`/stories/${data.id}`)
     } catch (e) {
       console.error(e)
@@ -29,7 +27,10 @@ export default function NewStory() {
   }
 
   return (
-    <form className="flex flex-col gap-2 bg-purple-950 p-4 rounded-lg" onSubmit={generate}>
+    <form
+      className="flex flex-col gap-2 bg-purple-950 p-4 rounded-lg"
+      onSubmit={generate}
+    >
       <label htmlFor="context">What`s your new story about?</label>
       <input
         id="context"

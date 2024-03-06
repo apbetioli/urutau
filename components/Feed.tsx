@@ -2,9 +2,10 @@
 
 import NewStory from '@/components/NewStory'
 import StoryCard from '@/components/StoryCard'
-import { SignedIn } from '@clerk/nextjs'
+import { SignedIn, SignedOut } from '@clerk/nextjs'
 import { Story } from '@prisma/client'
 import Link from 'next/link'
+import Button from './Button'
 import Empty from './Empty'
 
 type StoryWithMedia = Story & { image?: { id: string } } & {
@@ -13,10 +14,15 @@ type StoryWithMedia = Story & { image?: { id: string } } & {
 
 export default function Feed({ stories }: { stories: StoryWithMedia[] }) {
   return (
-    <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8 mt-5">
+    <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8">
       <SignedIn>
         <NewStory />
       </SignedIn>
+      <SignedOut>
+        <Link href="/stories">
+          <Button>Create a story</Button>
+        </Link>
+      </SignedOut>
       {stories.length === 0 && (
         <Empty title="No stories yet" text="Get started adding one above" />
       )}

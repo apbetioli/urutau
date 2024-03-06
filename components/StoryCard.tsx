@@ -34,7 +34,7 @@ export default function StoryCard({
     >
       {story.image && (
         <NextImage
-          className="object-cover w-full"
+          className="object-cover"
           src={`/api/image/${story.image.id}`}
           alt={story.subject}
           width={1024}

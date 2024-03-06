@@ -2,7 +2,7 @@ import { Image, Speech, Story } from '@prisma/client'
 
 import Button from '@/components/Button'
 import Empty from '@/components/Empty'
-import StoryEditor from '@/components/StoryEditor'
+import StoryDetail from '@/components/StoryDetail'
 import { prisma } from '@/utils/server/db'
 import Link from 'next/link'
 
@@ -45,7 +45,7 @@ export default async function StoryPage({
   return (
     <div className="flex flex-col w-full h-full">
       {story ? (
-        <StoryEditor story={story} />
+        <StoryDetail story={story} />
       ) : (
         <Empty
           title="Story not found"
