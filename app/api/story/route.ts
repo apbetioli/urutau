@@ -16,6 +16,7 @@ export const POST = async (request: Request) => {
   const story = await prisma.story.create({
     data: {
       userId: user.id,
+      language,
       ...aiStory,
     },
   })
@@ -40,6 +41,7 @@ export const POST = async (request: Request) => {
   ])
 
   revalidatePath('/stories')
+  revalidatePath('/feed')
 
   return NextResponse.json({ data: story })
 }

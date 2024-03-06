@@ -17,7 +17,7 @@ export default function HomePage() {
           </p>
 
           <div>
-            <Link href="/stories">
+            <Link href="/feed">
               <Button>Get started</Button>
             </Link>
           </div>

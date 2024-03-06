@@ -16,13 +16,9 @@ type Props = {
 
 export default function StoryEditor({ story }: Props) {
   return (
-    <div className="h-full w-full flex flex-col md:grid md:grid-cols-3">
-      <aside className="md:col-span-1 flex flex-col gap-4 border-l border-white/20 p-4">
-        <StoryCard story={story} />
-      </aside>
-
-      <main className="md:col-span-2 p-4 grow relative">
-        <div className="bg-gray-800 rounded-lg p-4 h-full">
+    <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8 mt-5">
+      <StoryCard story={story}>
+        <main className="mt-8">
           {story.content.split('\n').map((paragraph, index) => {
             return (
               <p key={index} className="mb-3">
@@ -30,8 +26,8 @@ export default function StoryEditor({ story }: Props) {
               </p>
             )
           })}
-        </div>
-      </main>
+        </main>
+      </StoryCard>
     </div>
   )
 }
