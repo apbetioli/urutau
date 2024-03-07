@@ -34,33 +34,9 @@ model Story {
   prompt     String   @db.Text
   subject    String   @db.Text
   language   String   @default("en-US")
-  speech     Speech?
-  image      Image?
   image_url  String?
   speech_url String?
 
   @@unique([id, userId])
   @@index([userId])
-}
-
-model Speech {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  storyId   String   @unique
-  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
-  buffer    Bytes
-
-  @@index([storyId])
-}
-
-model Image {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  storyId   String   @unique
-  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
-  buffer    Bytes
-
-  @@index([storyId])
 }
