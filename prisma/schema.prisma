@@ -25,17 +25,19 @@ model User {
 }
 
 model Story {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content   String   @db.Text
-  prompt    String   @db.Text
-  subject   String   @db.Text
-  language  String   @default("en-US")
-  speech    Speech?
-  image     Image?
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content    String   @db.Text
+  prompt     String   @db.Text
+  subject    String   @db.Text
+  language   String   @default("en-US")
+  speech     Speech?
+  image      Image?
+  image_url  String?
+  speech_url String?
 
   @@unique([id, userId])
   @@index([userId])

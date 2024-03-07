@@ -8,8 +8,8 @@ export const generateSpeech = async (content: string) => {
     voice: 'nova',
     input: content,
   })
-  const bytes = await mp3.arrayBuffer()
-  return Buffer.from(bytes)
+  const arrayBuffer = await mp3.arrayBuffer()
+  return Buffer.from(arrayBuffer)
 }
 
 export const generateImage = async (prompt: string) => {
@@ -23,7 +23,8 @@ export const generateImage = async (prompt: string) => {
   })
 
   const image = await fetch(response.data[0].url!)
-  return Buffer.from(await image.arrayBuffer())
+  const arrayBuffer = await image.arrayBuffer()
+  return Buffer.from(arrayBuffer)
 }
 
 export const generateStory = async (

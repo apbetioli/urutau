@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['urutau-kappa.vercel.app'],
+    domains: ['urutau.s3.amazonaws.com'],
   },
 }
 
