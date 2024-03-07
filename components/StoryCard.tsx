@@ -2,9 +2,9 @@
 
 import { Image, Speech, Story, User } from '@prisma/client'
 
-import { PropsWithChildren } from 'react'
 import { cn } from '@/utils/cn'
 import NextImage from 'next/image'
+import { PropsWithChildren } from 'react'
 
 type StoryWithMedia = Story & {
   speech?: Pick<Speech, 'id'>
@@ -14,13 +14,13 @@ type StoryWithMedia = Story & {
 
 type Props = {
   story: StoryWithMedia
-  previewContent?: boolean
+  preview?: boolean
   className?: string
 }
 
 export default function StoryCard({
   story,
-  previewContent: preview,
+  preview,
   className,
   children,
 }: PropsWithChildren<Props>) {
@@ -32,13 +32,13 @@ export default function StoryCard({
         className,
       )}
     >
-      {story.image && (
+      {story.image_url && (
         <NextImage
-          className="object-cover"
-          src={`/api/image/${story.image.id}`}
+          className="object-cover w-full"
+          src={story.image_url}
           alt={story.subject}
-          width={1024}
-          height={1024}
+          width={512}
+          height={512}
         />
       )}
 
@@ -49,18 +49,8 @@ export default function StoryCard({
         <h3 className="mt-2 text-gray-800 transition-colors duration-300 transform dark:text-white hover:text-gray-600">
           {story.subject}
         </h3>
-        {preview && (
-          <p className="mt-3 text-gray-500 dark:text-gray-400">
-            {story.content.slice(0, 100)}
-            ...
-          </p>
-        )}
-        {!preview && story.speech && (
-          <audio
-            className="mt-3"
-            controls
-            src={`/api/speech/${story.speech.id}`}
-          />
+        {!preview && story.speech_url && (
+          <audio className="mt-3" controls src={story.speech_url} />
         )}
         {children}
       </div>

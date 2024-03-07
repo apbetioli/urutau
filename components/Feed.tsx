@@ -80,6 +80,7 @@ export default function Feed({
           <StoryCard
             story={story}
             className="border-2 border-gray-700 hover:border-indigo-500 transition duration-300 h-full"
+            preview
           />
         </Link>
       ))}
