@@ -1,19 +1,17 @@
 'use client'
 
-import { Image, Speech, Story, User } from '@prisma/client'
+import { Story, User } from '@prisma/client'
 
 import { cn } from '@/utils/cn'
 import NextImage from 'next/image'
 import { PropsWithChildren } from 'react'
 
-type StoryWithMedia = Story & {
-  speech?: Pick<Speech, 'id'>
-  image?: Pick<Image, 'id'>
+type StoryWithUser = Story & {
   user?: Pick<User, 'name'>
 }
 
 type Props = {
-  story: StoryWithMedia
+  story: StoryWithUser
   preview?: boolean
   className?: string
 }

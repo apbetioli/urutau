@@ -23,13 +23,6 @@ export const GET = async (request: Request) => {
     orderBy: {
       createdAt: 'desc',
     },
-    include: {
-      image: {
-        select: {
-          id: true,
-        },
-      },
-    },
   })
 
   return NextResponse.json({ data: stories })

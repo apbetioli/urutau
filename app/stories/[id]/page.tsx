@@ -1,4 +1,4 @@
-import { Image, Speech, Story } from '@prisma/client'
+import { Story } from '@prisma/client'
 
 import Button from '@/components/Button'
 import Empty from '@/components/Empty'
