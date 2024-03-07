@@ -1,12 +1,14 @@
 import {
-  DeleteObjectCommand,
-  ObjectCannedACL,
-  PutObjectCommand,
-  S3Client,
+    DeleteObjectCommand,
+    ObjectCannedACL,
+    PutObjectCommand,
+    S3Client,
 } from '@aws-sdk/client-s3'
 import { resizeImage } from './image'
 
-export async function uploadImage(id: string, buffer: Buffer) {
+export async function uploadImage(id: string, buffer?: Buffer) {
+  if (!buffer) return
+
   const path = `images/${id}.webp`
 
   const resized = await resizeImage(buffer)
@@ -30,7 +32,9 @@ export async function uploadImage(id: string, buffer: Buffer) {
   return `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${path}`
 }
 
-export async function uploadSpeech(id: string, buffer: Buffer) {
+export async function uploadSpeech(id: string, buffer?: Buffer) {
+  if (!buffer) return
+
   const path = `audio/${id}.mp3`
 
   const uploadParams = {
