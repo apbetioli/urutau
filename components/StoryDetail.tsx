@@ -1,16 +1,10 @@
 'use client'
 
-import { Image, Speech, Story } from '@prisma/client'
-
+import { Story } from '@prisma/client'
 import StoryCard from './StoryCard'
 
-type StoryWithMedia = Story & {
-  speech?: Pick<Speech, 'id'>
-  image?: Pick<Image, 'id'>
-}
-
 type Props = {
-  story: StoryWithMedia
+  story: Story
   edit?: boolean
 }
 
