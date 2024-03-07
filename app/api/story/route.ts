@@ -5,7 +5,7 @@ import { getUserByClerkId } from '@/utils/server/auth'
 import { prisma } from '@/utils/server/db'
 import { revalidatePath } from 'next/cache'
 
-export const maxDuration = 300
+export const maxDuration = 30
 
 export const POST = async (request: Request) => {
   const user = await getUserByClerkId()
@@ -16,6 +16,7 @@ export const POST = async (request: Request) => {
   const story = await prisma.story.create({
     data: {
       userId: user.id,
+      language,
       ...aiStory,
     },
   })
@@ -40,6 +41,7 @@ export const POST = async (request: Request) => {
   ])
 
   revalidatePath('/stories')
+  revalidatePath('/feed')
 
   return NextResponse.json({ data: story })
 }

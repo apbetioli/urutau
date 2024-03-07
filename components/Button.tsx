@@ -19,7 +19,7 @@ export default function Button({
 }: PropsWithChildren<Props>) {
   return (
     <button
-      className={cn('p-[3px] relative')}
+      className={cn('p-[3px] relative w-full')}
       disabled={disabled}
       type={type}
       onClick={onClick}

@@ -17,6 +17,7 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
+  name      String   @default("Anonymous")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   clerkId   String   @unique
@@ -32,6 +33,7 @@ model Story {
   content   String   @db.Text
   prompt    String   @db.Text
   subject   String   @db.Text
+  language  String   @default("en-US")
   speech    Speech?
   image     Image?
 

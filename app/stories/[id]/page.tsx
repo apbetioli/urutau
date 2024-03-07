@@ -2,10 +2,9 @@ import { Image, Speech, Story } from '@prisma/client'
 
 import Button from '@/components/Button'
 import Empty from '@/components/Empty'
-import Link from 'next/link'
-import StoryEditor from '@/components/StoryEditor'
-import { getUserByClerkId } from '@/utils/server/auth'
+import StoryDetail from '@/components/StoryDetail'
 import { prisma } from '@/utils/server/db'
+import Link from 'next/link'
 
 type StoryWithMedia = Story & {
   speech?: Pick<Speech, 'id'>
@@ -13,13 +12,9 @@ type StoryWithMedia = Story & {
 }
 
 const getStory = async (id: string) => {
-  const user = await getUserByClerkId()
   return await prisma.story.findUnique({
     where: {
-      id_userId: {
-        id,
-        userId: user.id,
-      },
+      id,
     },
     include: {
       speech: {
@@ -30,6 +25,11 @@ const getStory = async (id: string) => {
       image: {
         select: {
           id: true,
+        },
+      },
+      user: {
+        select: {
+          name: true,
         },
       },
     },
@@ -45,7 +45,7 @@ export default async function StoryPage({
   return (
     <div className="flex flex-col w-full h-full">
       {story ? (
-        <StoryEditor story={story} />
+        <StoryDetail story={story} />
       ) : (
         <Empty
           title="Story not found"
