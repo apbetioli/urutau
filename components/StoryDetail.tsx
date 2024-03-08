@@ -12,6 +12,9 @@ export default function StoryDetail({ story }: Props) {
   return (
     <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8 mt-5">
       <StoryCard story={story}>
+        {story.speech_url && (
+          <audio className="mt-3" controls src={story.speech_url} />
+        )}
         <main className="mt-8">
           {story.content.split('\n').map((paragraph, index) => {
             return (
