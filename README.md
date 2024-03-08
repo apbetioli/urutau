@@ -4,9 +4,9 @@ My son loves listening to bedtime stories. We have a player with some recorded s
 
 This is a bedtime stories generator that uses AI for:
 
-- generating the story with llms
-- generating the audio with TTS
-- generating the cover image
+- generating the story with gpt-3.5-turbo
+- generating the audio with tts-1
+- generating the cover image with dall-e-3
 
 All stories, audio, and images are kept in a database so that I can read and play them again and again (and again...).
 
@@ -32,6 +32,7 @@ This project was built with:
 - Prisma      - no SQL
 - Clerk       - identify yourself
 - Langchain   - talk to the AI
+- AWS S3      - save your creations
 
 Currently, it supports only OpenAI. More to come...
 
