@@ -17,6 +17,7 @@ export const POST = async (request: Request) => {
   const story = await prisma.story.create({
     data: {
       userId: user.id,
+      public: false,
       language,
       ...aiStory,
     },

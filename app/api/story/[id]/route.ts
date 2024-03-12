@@ -10,13 +10,14 @@ export const PATCH = async (
 ) => {
   const user = await getUserByClerkId()
 
-  const { content, subject } = await request.json()
+  const story = await request.json()
   const { id } = params
 
   const updated = await prisma.story.update({
     data: {
-      content,
-      subject,
+      content: story.content,
+      subject: story.subject,
+      public: story.public,
     },
     where: {
       id_userId: {

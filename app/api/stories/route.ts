@@ -9,7 +9,11 @@ export const GET = async (request: Request) => {
   const take = Number(searchParams.get('take') || 10)
   let where = {}
 
-  if (!feed) {
+  if (feed) {
+    where = {
+      public: true,
+    }
+  } else {
     const user = await getUserByClerkId()
     where = {
       userId: user.id,

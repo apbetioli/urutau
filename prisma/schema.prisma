@@ -37,6 +37,7 @@ model Story {
   language   String   @default("en-US")
   image_url  String?
   speech_url String?
+  public     Boolean  @default(false)
 
   @@unique([id, userId])
   @@index([userId])
