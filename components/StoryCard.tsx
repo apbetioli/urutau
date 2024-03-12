@@ -12,13 +12,11 @@ type StoryWithUser = Story & {
 
 type Props = {
   story: StoryWithUser
-  preview?: boolean
   className?: string
 }
 
 export default function StoryCard({
   story,
-  preview,
   className,
   children,
 }: PropsWithChildren<Props>) {
@@ -47,9 +45,7 @@ export default function StoryCard({
         <h3 className="mt-2 text-gray-800 transition-colors duration-300 transform dark:text-white hover:text-gray-600">
           {story.subject}
         </h3>
-        {!preview && story.speech_url && (
-          <audio className="mt-3" controls src={story.speech_url} />
-        )}
+
         {children}
       </div>
     </div>
