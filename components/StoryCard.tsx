@@ -45,7 +45,7 @@ export default function StoryCard({
         <h3 className="mt-2 text-gray-800 transition-colors duration-300 transform dark:text-white hover:text-gray-600">
           {story.subject}
         </h3>
-               
+
         {children}
       </div>
     </div>
