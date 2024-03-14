@@ -1,10 +1,34 @@
 import {
+  InvocationType,
+  InvokeCommand,
+  LambdaClient,
+  LogType,
+} from '@aws-sdk/client-lambda'
+import {
   DeleteObjectCommand,
   ObjectCannedACL,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
 import { resizeImage } from './image'
+
+export const invokeLambda = async (
+  funcName: string,
+  payload: any,
+  type = InvocationType.Event, // asynchronous
+) => {
+  const client = new LambdaClient({ region: process.env.AWS_REGION })
+  const command = new InvokeCommand({
+    FunctionName: funcName,
+    Payload: JSON.stringify(payload),
+    LogType: LogType.Tail,
+    InvocationType: type,
+  })
+  console.log('Invoking lambda', funcName)
+  const result = await client.send(command)
+  console.log('Lambda response status', result.StatusCode)
+  return { result }
+}
 
 export async function uploadImage(id: string, buffer?: Buffer) {
   if (!buffer) return

@@ -1,8 +1,8 @@
-import { generateImage, generateSpeech, generateStory } from '@/utils/server/ai'
+import { generateStory } from '@/utils/server/ai'
 
 import { getUserByClerkId } from '@/utils/server/auth'
+import { invokeLambda } from '@/utils/server/aws'
 import { prisma } from '@/utils/server/db'
-import { uploadImage, uploadSpeech } from '@/utils/server/s3'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
@@ -23,27 +23,19 @@ export const POST = async (request: Request) => {
     },
   })
 
-  const [image_url, speech_url] = await Promise.all([
-    generateImage(story.subject).then((buffer) =>
-      uploadImage(story.id, buffer),
-    ),
-    generateSpeech(`${story.subject}.\n${story.content}`).then((buffer) =>
-      uploadSpeech(story.id, buffer),
-    ),
-  ])
+  const { id, subject, content } = story
+  const contentWithTitle = subject + '. ' + content
 
-  const updated = await prisma.story.update({
-    data: {
-      image_url,
-      speech_url,
-    },
-    where: {
-      id: story.id,
-    },
-  })
+  await Promise.all([
+    invokeLambda('urutau-serverless-dev-generateImage', { id, subject }),
+    invokeLambda('urutau-serverless-dev-generateSpeech', {
+      id,
+      content: contentWithTitle,
+    }),
+  ])
 
   revalidatePath('/stories')
   revalidatePath('/feed')
 
-  return NextResponse.json({ data: updated })
+  return NextResponse.json({ data: story })
 }

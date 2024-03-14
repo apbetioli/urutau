@@ -2,7 +2,7 @@
 
 import { updateStory } from '@/utils/api'
 import { Story } from '@prisma/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from './Button'
 import StoryCard from './StoryCard'
 import { Spinner } from './icons'
@@ -13,16 +13,78 @@ type Props = {
 }
 
 export default function StoryDetail({ story }: Props) {
-  const [published, setPublished] = useState(story.public)
+  const [detail, setDetail] = useState(story)
   const [isBusy, setBusy] = useState(false)
+
+  useEffect(() => {
+    if (detail.image_url) {
+      return
+    }
+
+    const image_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/images/${detail.id}.webp`
+
+    var intervalId: any = setInterval(() => {
+      console.log('Checking image status')
+      fetch(image_url).then(async (res: Response) => {
+        console.log('Image status == ', res.status)
+        if (res.status === 200) {
+          clearInterval(intervalId)
+          intervalId = null
+          console.log('Image ready')
+          await updateStory(detail.id, {
+            image_url,
+          })
+
+          setDetail((current) => ({ ...current, image_url }))
+        }
+      })
+    }, 5000)
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (detail.speech_url) {
+      return
+    }
+
+    const speech_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/audio/${detail.id}.mp3`
+
+    var intervalId: any = setInterval(() => {
+      console.log('Checking speech status')
+      fetch(speech_url).then(async (res: Response) => {
+        console.log('Speech status == ', res.status)
+        if (res.status === 200) {
+          clearInterval(intervalId)
+          intervalId = null
+          console.log('Speech ready')
+          await updateStory(detail.id, {
+            speech_url,
+          })
+
+          setDetail((current) => ({ ...current, speech_url }))
+        }
+      })
+    }, 5000)
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId)
+      }
+    }
+  }, [])
 
   const publish = async () => {
     setBusy(true)
     try {
-      const { data } = await updateStory(story.id, {
-        public: !published,
+      const { data } = await updateStory(detail.id, {
+        public: !detail.public,
       })
-      setPublished(data.public)
+      setDetail(data)
     } finally {
       setBusy(false)
     }
@@ -32,14 +94,14 @@ export default function StoryDetail({ story }: Props) {
     <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8 mt-5">
       <Button disabled={isBusy} onClick={publish}>
         {isBusy && <Spinner />}
-        {published ? 'Make story private' : 'Publish to public feed'}
+        {detail.public ? 'Make story private' : 'Publish to public feed'}
       </Button>
-      <StoryCard story={story}>
-        {story.speech_url && (
-          <audio className="my-8" controls src={story.speech_url} />
+      <StoryCard story={detail}>
+        {detail.speech_url && (
+          <audio className="my-8" controls src={detail.speech_url} />
         )}
         <main className="mt-8">
-          {story.content.split('\n').map((paragraph, index) => {
+          {detail.content.split('\n').map((paragraph, index) => {
             return (
               <p key={index} className="mb-3">
                 {paragraph}

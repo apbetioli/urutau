@@ -1,6 +1,6 @@
 import { getUserByClerkId } from '@/utils/server/auth'
 import { prisma } from '@/utils/server/db'
-import { deleteImage, deleteSpeech } from '@/utils/server/s3'
+import { deleteImage, deleteSpeech } from '@/utils/server/aws'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
@@ -18,6 +18,8 @@ export const PATCH = async (
       content: story.content,
       subject: story.subject,
       public: story.public,
+      image_url: story.image_url,
+      speech_url: story.speech_url,
     },
     where: {
       id_userId: {

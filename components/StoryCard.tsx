@@ -5,6 +5,7 @@ import { Story, User } from '@prisma/client'
 import { cn } from '@/utils/cn'
 import NextImage from 'next/image'
 import { PropsWithChildren } from 'react'
+import { Spinner } from './icons'
 
 type StoryWithUser = Story & {
   user?: Pick<User, 'name'>
@@ -28,7 +29,7 @@ export default function StoryCard({
         className,
       )}
     >
-      {story.image_url && (
+      {story.image_url ? (
         <NextImage
           className="object-cover w-full"
           src={story.image_url}
@@ -36,6 +37,10 @@ export default function StoryCard({
           width={512}
           height={512}
         />
+      ) : (
+        <div className="flex flex-col items-center justify-center object-cover w-full h-[512px]">
+          <Spinner />
+        </div>
       )}
 
       <div className="p-6">
