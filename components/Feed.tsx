@@ -6,7 +6,7 @@ import StoryCard from '@/components/StoryCard'
 import { SignedIn, SignedOut } from '@clerk/nextjs'
 import { Story } from '@prisma/client'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Button from './Button'
 import Empty from './Empty'
 import { Spinner } from './icons'
@@ -26,19 +26,16 @@ export default function Feed({
   const [isLoadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(false)
 
-  const [take, setTake] = useState(10)
+  const take = 5
   const [skip, setSkip] = useState(0)
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const { data } = await load(skip, take)
-    setStories([...stories, ...data])
-    if (data.length > 0) {
-      setSkip(skip + take)
-      setHasMore(true)
-    } else {
-      setHasMore(false)
-    }
-  }
+    console.log('Loaded', data.length)
+    setStories((current) => [...current, ...data])
+    setSkip((current) => current + data.length)
+    setHasMore(data.length > 0)
+  }, [skip, take, load])
 
   const loadMore = async () => {
     setLoadingMore(true)
@@ -56,7 +53,7 @@ export default function Feed({
         setLoading(false)
       })
     }
-  }, [])
+  }, [loadData])
 
   if (isLoading) {
     return <LoadingPage />

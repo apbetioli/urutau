@@ -12,71 +12,72 @@ type Props = {
   edit?: boolean
 }
 
+const FETCH_INTERVAL = 5000
+
 export default function StoryDetail({ story }: Props) {
   const [detail, setDetail] = useState(story)
   const [isBusy, setBusy] = useState(false)
 
   useEffect(() => {
-    if (detail.image_url) {
+    if (story.image_url) {
       return
     }
 
-    const image_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/images/${detail.id}.webp`
+    const image_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/images/${story.id}.webp`
 
     var intervalId: any = setInterval(() => {
-      console.log('Checking image status')
+      console.log('Checking image generation status')
+
       fetch(image_url).then(async (res: Response) => {
-        console.log('Image status == ', res.status)
+        console.log('Image generation status == ', res.status)
         if (res.status === 200) {
+          console.log('Image ready')
           clearInterval(intervalId)
           intervalId = null
-          console.log('Image ready')
-          await updateStory(detail.id, {
+          await updateStory(story.id, {
             image_url,
           })
 
           setDetail((current) => ({ ...current, image_url }))
         }
       })
-    }, 5000)
+    }, FETCH_INTERVAL)
 
     return () => {
       if (intervalId) {
         clearInterval(intervalId)
       }
     }
-  }, [])
+  }, [story])
 
   useEffect(() => {
-    if (detail.speech_url) {
+    if (story.speech_url) {
       return
     }
 
-    const speech_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/audio/${detail.id}.mp3`
+    const speech_url = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.amazonaws.com/audio/${story.id}.mp3`
 
     var intervalId: any = setInterval(() => {
-      console.log('Checking speech status')
       fetch(speech_url).then(async (res: Response) => {
-        console.log('Speech status == ', res.status)
+        console.log('Checking speech generation status == ', res.status)
         if (res.status === 200) {
+          console.log('Speech ready')
           clearInterval(intervalId)
           intervalId = null
-          console.log('Speech ready')
-          await updateStory(detail.id, {
+          await updateStory(story.id, {
             speech_url,
           })
-
           setDetail((current) => ({ ...current, speech_url }))
         }
       })
-    }, 5000)
+    }, FETCH_INTERVAL)
 
     return () => {
       if (intervalId) {
         clearInterval(intervalId)
       }
     }
-  }, [])
+  }, [story])
 
   const publish = async () => {
     setBusy(true)
