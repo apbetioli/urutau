@@ -27,6 +27,13 @@ export const GET = async (request: Request) => {
     orderBy: {
       createdAt: 'desc',
     },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
   })
 
   return NextResponse.json({ data: stories })
