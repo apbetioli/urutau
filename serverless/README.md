@@ -39,6 +39,6 @@ Which should result in response similar to the following:
 ```json
 {
   "statusCode": 200,
-  "body": "{\"url\": \"...\"}"
+  "body": "https://urutau.s3.amazonaws.com/audio/00000000000.mp3"
 }
 ```
