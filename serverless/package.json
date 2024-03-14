@@ -1,0 +1,17 @@
+{
+  "name": "urutau-serverless",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "npm install --os=linux --cpu=x64 && npx -y env-cmd -f ../.env.local serverless deploy",
+    "testImage": "npx -y env-cmd -f ../.env.local serverless invoke -f generateImage -p testImage.json",
+    "testImageLocal": "npx -y env-cmd -f ../.env.local serverless invoke local -f generateImage -p testImage.json",
+    "testSpeech": "npx -y env-cmd -f ../.env.local serverless invoke -f generateSpeech -p testSpeech.json",
+    "testSpeechLocal": "npx -y env-cmd -f ../.env.local serverless invoke local -f generateSpeech -p testSpeech.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.529.1",
+    "openai": "^4.28.4",
+    "sharp": "^0.33.2"
+  }
+}
