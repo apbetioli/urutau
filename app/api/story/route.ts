@@ -6,7 +6,7 @@ import { prisma } from '@/utils/server/db'
 import { revalidatePath } from 'next/cache'
 import { NextResponse } from 'next/server'
 
-export const maxDuration = 30
+export const maxDuration = 10 // Vercel's function timeout
 
 export const POST = async (request: Request) => {
   const user = await getUserByClerkId()
