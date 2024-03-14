@@ -1,6 +1,6 @@
 # Urutau
 
-My son loves listening to bedtime stories. We have a player with some recorded stories, but he always asks for one story from my imagination. So, I built this to help me. 
+My son loves listening to bedtime stories. We have a player with some recorded stories, but he always asks for one story from my imagination. So, I built this to help me.
 
 This is a bedtime stories generator that uses AI for:
 
@@ -26,15 +26,24 @@ Why Urutau? The first name that came to my mind is a bird from South America tha
 
 This project was built with:
 
-- Next.js     - pure magic
-- Typescript  - let's make it harder
+- Next.js - pure magic
+- Typescript - let's make it harder
 - TailwindCSS - a bit of color
-- Prisma      - no SQL
-- Clerk       - identify yourself
-- Langchain   - talk to the AI
-- AWS S3      - save your creations
+- Prisma - no SQL
+- Clerk - identify yourself
+- Langchain - talk to the AI
+- AWS Lambda - talk more to the AI
+- AWS S3 - save your creations
 
 Currently, it supports only OpenAI. More to come...
+
+## Deploy
+
+First step is deploying the serverless functions to AWS Lambda. The generation of images and audio can take more than 10 seconds, which is Vercel's hobby plan timeout, so we use AWS to reduce costs.
+
+The serverless project is on a subfolder called `serverless`. Follow its [README](serverless/README.md) for deploying.
+
+Next you can deploy this project to Vercel.
 
 ## Getting Started
 
