@@ -1,0 +1,26 @@
+service: urutau-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 's3:PutObject'
+            - 's3:PutObjectAcl'
+          Resource:
+            - 'arn:aws:s3:::urutau/*'
+
+functions:
+  generateImage:
+    handler: lambdaImageGen.handler
+    timeout: 60
+    environment: ${file(env.json)}
+
+  generateSpeech:
+    handler: lambdaSpeechGen.handler
+    timeout: 60
+    environment: ${file(env.json)}
