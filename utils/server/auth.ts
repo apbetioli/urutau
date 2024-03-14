@@ -2,6 +2,9 @@ import { auth, clerkClient } from '@clerk/nextjs/server'
 
 import { prisma } from './db'
 
+/**
+ * Uses Cleck id to retrieve user from database or create it if it doesn't exist.
+ */
 export const getUserByClerkId = async () => {
   const { userId } = auth()
   if (!userId) {
