@@ -4,10 +4,7 @@ import {
   LambdaClient,
   LogType,
 } from '@aws-sdk/client-lambda'
-import {
-  DeleteObjectCommand,
-  S3Client
-} from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 export const invokeLambda = async (
   funcName: string,
