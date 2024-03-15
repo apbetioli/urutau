@@ -1,9 +1,7 @@
-import Button from '@/components/Button'
-import Empty from '@/components/Empty'
 import StoryDetail from '@/components/StoryDetail'
 import { getUserByClerkId } from '@/utils/server/auth'
 import { prisma } from '@/utils/server/db'
-import Link from 'next/link'
+import { notFound } from 'next/navigation'
 
 const getStory = async (id: string) => {
   const story = await prisma.story.findUnique({
@@ -19,10 +17,14 @@ const getStory = async (id: string) => {
     },
   })
 
-  if (story && !story.public) {
+  if (!story) {
+    notFound()
+  }
+
+  if (!story.public) {
     const user = await getUserByClerkId()
     if (story.userId !== user.id) {
-      throw new Error('Story not found!')
+      notFound()
     }
   }
 
@@ -35,20 +37,10 @@ export default async function StoryPage({
   params: { id: string }
 }) {
   const story = await getStory(params.id)
+
   return (
     <div className="flex flex-col w-full h-full">
-      {story ? (
-        <StoryDetail story={story} />
-      ) : (
-        <Empty
-          title="Story not found!"
-          text="Click on the button below to check for available stories."
-        >
-          <Link href="/stories">
-            <Button>Check avaliable stories</Button>
-          </Link>
-        </Empty>
-      )}
+      <StoryDetail story={story} />
     </div>
   )
 }
