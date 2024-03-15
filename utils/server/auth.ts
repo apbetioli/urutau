@@ -1,5 +1,6 @@
 import { auth, clerkClient } from '@clerk/nextjs/server'
 
+import { redirect } from 'next/navigation'
 import { prisma } from './db'
 
 /**
@@ -8,7 +9,7 @@ import { prisma } from './db'
 export const getUserByClerkId = async () => {
   const { userId } = auth()
   if (!userId) {
-    throw new Error('You are not logged in!')
+    redirect('/sign-in')
   }
 
   const user = await prisma.user.findUnique({
