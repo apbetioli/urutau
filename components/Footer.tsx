@@ -5,10 +5,10 @@ import { GithubIcon } from './icons'
 
 export default function Footer() {
   const footerLinks = [
-    { href: '/soon', label: 'Pricing' },
-    { href: '/soon', label: 'FAQs' },
-    { href: '/soon', label: 'Terms of service' },
-    { href: '/soon', label: 'Privacy policy' },
+    { href: '/soon?p=pricing', label: 'Pricing' },
+    { href: '/soon?p=faqs', label: 'FAQs' },
+    { href: '/soon?p=terms', label: 'Terms of service' },
+    { href: '/soon?p=privacy', label: 'Privacy policy' },
     { href: 'https://github.com/apbetioli/urutau', label: <GithubIcon /> },
   ]
   return (
