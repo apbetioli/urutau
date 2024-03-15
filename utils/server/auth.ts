@@ -8,7 +8,7 @@ import { prisma } from './db'
 export const getUserByClerkId = async () => {
   const { userId } = auth()
   if (!userId) {
-    throw new Error('User not found')
+    throw new Error('You are not logged in!')
   }
 
   const user = await prisma.user.findUnique({

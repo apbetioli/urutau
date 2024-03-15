@@ -31,7 +31,7 @@ export default function Feed({
 
   const loadData = useCallback(async () => {
     const { data } = await load(skip, take)
-    setStories((current) => [...current, ...data])
+    setStories((current) => current.concat(data))
     setSkip((current) => current + data.length)
     setHasMore(data.length > 0)
   }, [skip, take, load])
