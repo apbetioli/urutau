@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Github } from './icons'
+import { GithubIcon } from './icons'
 
 export default function Footer() {
   const footerLinks = [
@@ -9,7 +9,7 @@ export default function Footer() {
     { href: '/soon', label: 'FAQs' },
     { href: '/soon', label: 'Terms of service' },
     { href: '/soon', label: 'Privacy policy' },
-    { href: 'https://github.com/apbetioli/urutau', label: <Github /> },
+    { href: 'https://github.com/apbetioli/urutau', label: <GithubIcon /> },
   ]
   return (
     <footer className="flex flex-col sm:flex-row items-center sm:h-20 gap-6 p-8 font-medium border-t border-white/20 text-sm">

@@ -6,7 +6,7 @@ import { prisma } from '@/utils/server/db'
 import Link from 'next/link'
 
 const getStory = async (id: string) => {
-  const story = await prisma.story.findUniqueOrThrow({
+  const story = await prisma.story.findUnique({
     where: {
       id,
     },
@@ -19,10 +19,10 @@ const getStory = async (id: string) => {
     },
   })
 
-  if (!story.public) {
+  if (story && !story.public) {
     const user = await getUserByClerkId()
     if (story.userId !== user.id) {
-      throw new Error('Not found!')
+      throw new Error('Story not found!')
     }
   }
 
@@ -41,7 +41,7 @@ export default async function StoryPage({
         <StoryDetail story={story} />
       ) : (
         <Empty
-          title="Story not found"
+          title="Story not found!"
           text="Click on the button below to check for available stories."
         >
           <Link href="/stories">
