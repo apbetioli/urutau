@@ -1,10 +1,6 @@
 import { Story } from '@prisma/client'
 
-export const getStories = async (
-  skip?: number,
-  take?: number,
-  feed = false,
-) => {
+export const getStories = async (skip?: number, take = 5, feed = false) => {
   const params = new URLSearchParams()
   if (skip) params.set('skip', String(skip))
   if (take) params.set('take', String(take))

@@ -1,12 +1,11 @@
 'use client'
 
 import LoadingPage from '@/app/loading'
-import NewStory from '@/components/NewStory'
 import StoryCard from '@/components/StoryCard'
-import { SignedIn, SignedOut } from '@clerk/nextjs'
 import { Story } from '@prisma/client'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React from 'react'
 import Button from './Button'
 import Empty from './Empty'
 import { Spinner } from './icons'
@@ -20,69 +19,70 @@ export default function Feed({
 }: {
   load: (skip?: number, take?: number) => Promise<{ data: StoryWithMedia[] }>
 }) {
-  const fetched = useRef(false)
-  const [stories, setStories] = useState<StoryWithMedia[]>([])
-  const [isLoading, setLoading] = useState(true)
-  const [isLoadingMore, setLoadingMore] = useState(false)
-  const [hasMore, setHasMore] = useState(false)
-
-  const take = 5
-  const [skip, setSkip] = useState(0)
-
-  const loadData = useCallback(async () => {
-    const { data } = await load(skip, take)
-    setStories((current) => current.concat(data))
-    setSkip((current) => current + data.length)
-    setHasMore(data.length > 0)
-  }, [skip, take, load])
-
-  const loadMore = async () => {
-    setLoadingMore(true)
-    try {
-      await loadData()
-    } finally {
-      setLoadingMore(false)
+  const loadStories = async ({ pageParam = 0 }) => {
+    const { data } = await load(pageParam)
+    if (!data.length) {
+      return { data }
+    }
+    return {
+      data,
+      nextCursor: pageParam + data.length,
     }
   }
 
-  useEffect(() => {
-    if (!fetched.current) {
-      fetched.current = true
-      loadData().finally(() => {
-        setLoading(false)
-      })
-    }
-  }, [loadData])
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ['feed'],
+    queryFn: loadStories,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
+  })
 
   if (isLoading) {
     return <LoadingPage />
   }
 
-  return (
-    <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8">
-      <SignedIn>
-        <NewStory />
-      </SignedIn>
-      <SignedOut>
-        <Link href="/stories">
-          <Button>Create a story</Button>
-        </Link>
-      </SignedOut>
-      {stories.length === 0 && (
+  if (isError) {
+    return (
+      <div className="w-full max-w-xl p-2 m-auto flex flex-col gap-4">
+        <Empty title="Error" text={error.message} />
+      </div>
+    )
+  }
+
+  if (!data?.pages[0].data.length) {
+    return (
+      <div className="w-full max-w-xl p-2 m-auto flex flex-col gap-4">
         <Empty title="No stories yet" text="Get started adding one above" />
-      )}
-      {stories.map((story) => (
-        <Link key={story.id} href={`/stories/${story.id}`}>
-          <StoryCard
-            story={story}
-            className="border-2 border-gray-700 hover:border-indigo-500 transition duration-300 h-full"
-          />
-        </Link>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full max-w-xl p-2 m-auto flex flex-col gap-4">
+      {data.pages.map((group, i) => (
+        <React.Fragment key={i}>
+          {group.data.map((story) => (
+            <Link key={story.id} href={`/stories/${story.id}`}>
+              <StoryCard
+                story={story}
+                className="border-2 border-gray-700 hover:border-indigo-500 transition duration-300 h-full"
+              />
+            </Link>
+          ))}
+        </React.Fragment>
       ))}
-      {hasMore && (
-        <Button disabled={isLoadingMore} onClick={loadMore}>
-          {isLoadingMore && <Spinner />}
-          {isLoadingMore ? 'Loading more... Please wait' : 'Load more'}
+      {hasNextPage && (
+        <Button disabled={isFetchingNextPage} onClick={fetchNextPage}>
+          {isFetchingNextPage && <Spinner />}
+          {isFetchingNextPage ? 'Loading more... Please wait' : 'Load more'}
         </Button>
       )}
     </div>
