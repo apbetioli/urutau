@@ -79,11 +79,13 @@ export default function Feed({
           ))}
         </React.Fragment>
       ))}
-      {hasNextPage && (
+      {hasNextPage ? (
         <Button disabled={isFetchingNextPage} onClick={fetchNextPage}>
           {isFetchingNextPage && <Spinner />}
           {isFetchingNextPage ? 'Loading more... Please wait' : 'Load more'}
         </Button>
+      ) : (
+        <Button disabled>No more stories to load</Button>
       )}
     </div>
   )
