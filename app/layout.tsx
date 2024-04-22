@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -39,11 +40,13 @@ export default function RootLayout({
           },
         }}
       >
-        <body className={`${inter.className} h-screen flex flex-col `}>
-          <Header />
-          <main className="h-full grow">{children}</main>
-          {gaId && <GoogleAnalytics gaId={gaId} />}
-        </body>
+        <ReactQueryClientProvider>
+          <body className={`${inter.className} h-screen flex flex-col `}>
+            <Header />
+            <main className="h-full grow">{children}</main>
+            {gaId && <GoogleAnalytics gaId={gaId} />}
+          </body>
+        </ReactQueryClientProvider>
       </ClerkProvider>
     </html>
   )
