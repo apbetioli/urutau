@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Button from './Button'
 import StoryCard from './StoryCard'
 import { Spinner } from './icons'
+import { SignedIn } from '@clerk/nextjs'
 
 type Props = {
   story: Story
@@ -92,11 +93,7 @@ export default function StoryDetail({ story }: Props) {
   }
 
   return (
-    <div className="w-full max-w-xl p-2 md:p-8 m-auto flex flex-col gap-8 mt-5">
-      <Button disabled={isBusy} onClick={publish}>
-        {isBusy && <Spinner />}
-        {detail.public ? 'Make story private' : 'Publish to public feed'}
-      </Button>
+    <div className="w-full max-w-xl p-2 md:px-8 m-auto flex flex-col gap-8">
       <StoryCard story={detail}>
         {detail.speech_url && (
           <audio className="my-8" controls src={detail.speech_url} />
@@ -111,6 +108,12 @@ export default function StoryDetail({ story }: Props) {
           })}
         </main>
       </StoryCard>
+      <SignedIn>
+        <Button disabled={isBusy} onClick={publish}>
+          {isBusy && <Spinner />}
+          {detail.public ? 'Make story private' : 'Publish to public feed'}
+        </Button>
+      </SignedIn>
     </div>
   )
 }
