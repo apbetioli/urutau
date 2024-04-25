@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const LANGUAGES: Record<string, string> = {
   'en-US': 'English',
@@ -18,10 +18,10 @@ export default function useLanguage(): [string, (value: string) => void] {
     }
   }, [])
 
-  const handleLanguageChange = (value: string) => {
+  const handleLanguageChange = useCallback((value: string) => {
     setLanguage(value)
     localStorage.setItem('language', value)
-  }
+  }, [])
 
   return [language, handleLanguageChange]
 }
